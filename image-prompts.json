@@ -1,0 +1,49 @@
+{
+  "generator": "Built-in image_gen",
+  "prompts": [
+    {
+      "asset": "hero",
+      "prompt": "A wide cinematic editorial photograph for a Russia–India business council landing page: a monumental warm sandstone colonnade in a contemporary Indian business district at golden hour, elegant arches framing a distant modern skyline and reflecting water, subtle human scale figures only, refined terracotta ochre and deep teal palette, rich tactile stone, realistic architectural photography. Wide 3:2 landscape composition, darker quiet center for white headline, no text, no logos, no flags, no watermark."
+    },
+    {
+      "asset": "cooperation",
+      "prompt": "Wide editorial photograph, Russian and Indian business professionals meeting around a wooden table in a refined sunlit office, candid discussion, notebooks and architectural samples, natural gestures, ochre warm amber and muted blue palette, 3:2 landscape with people on left and right edges and quiet center to accommodate an overlaid UI card, documentary realism, no text, no logos, no flags, no watermark."
+    },
+    {
+      "asset": "logistics",
+      "prompt": "Wide realistic editorial aerial photograph of a modern container port on the Indian coast, cargo ship, cranes and organized shipping containers with green hills beyond, soft morning light, muted sage green and cream palette, premium restrained color grading, 3:2 landscape with detailed activity at edges and a quieter center for UI card overlay, crisp photography, no text, no logos, no watermark."
+    },
+    {
+      "asset": "expertise",
+      "prompt": "Wide editorial still life photograph of market research on a pale warm stone desk: open notebook with indistinct graphs, laptop partly visible, pen and a large folded map of India, calm modern office with muted rose and olive tones, warm natural side light, objects around edges and visually quiet center for interface overlay, 3:2 landscape, realistic paper textures, no readable text, no logos, no watermark."
+    },
+    {
+      "asset": "rupee",
+      "prompt": "Wide premium editorial macro photograph of Indian rupee coins arranged on warm terracotta stone, coins concentrated near upper left and right edges, saffron golden sunlight and deep brown shadows, tactile financial still life for international banking landing page, spacious darker lower half for white copy, authentic rupee symbol on coins, no banknotes, no additional typography, no logos, no watermark, 3:2 landscape."
+    },
+    {
+      "asset": "industry",
+      "prompt": "Square editorial photograph of a modern clean industrial production line, robotic arms and precision metal machinery, amber highlights and muted blue steel, realistic, bold simple composition legible as a tiny sector thumbnail, no text or logos."
+    },
+    {
+      "asset": "technology",
+      "prompt": "Square editorial macro photograph of an advanced microchip on a circuit board, muted olive and rose metallic palette, sharp tactile detail, simple central subject legible as small technology sector thumbnail, no typography, no logos."
+    },
+    {
+      "asset": "energy",
+      "prompt": "Square editorial landscape photograph of solar panels and wind turbines in an Indian dry grassland at golden hour, saffron and olive palette, simple strong composition legible as small energy sector thumbnail, realistic, no text or logos."
+    },
+    {
+      "asset": "agriculture",
+      "prompt": "Square editorial photograph of golden wheat heads in foreground and orderly green cultivated fields behind, soft sun, amber and sage palette, strong simple composition legible at thumbnail size, realistic, no text or logos."
+    },
+    {
+      "asset": "healthcare",
+      "prompt": "Square editorial photograph of a scientist's gloved hands holding a glass laboratory sample near a microscope in a clean modern medical laboratory, sage and cream palette, simple central subject legible at small thumbnail size, realistic, no text or logos."
+    },
+    {
+      "asset": "education",
+      "prompt": "Square editorial photograph of Indian and Russian university students discussing an open book at a library table, elegant natural light, deep teal and warm cream palette, simple close framing legible at thumbnail size, natural documentary style, no text or logos."
+    }
+  ]
+}
