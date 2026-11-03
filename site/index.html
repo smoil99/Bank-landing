@@ -94,30 +94,106 @@
   .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
   @media (max-width: 640px) { .feature .stage { aspect-ratio: 4 / 5; border-radius: 28px; } }
 
-  /* floating UI cards (как окна статуса у Lassie) */
-  .ui { position: relative; z-index: 2; width: min(400px, calc(100% - 32px)); background: rgba(255,255,255,.96); border-radius: 16px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.03); font-size: 13px; }
-  .ui-head { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 2px 2px 10px; }
-  .ui-row { display: flex; align-items: center; gap: 10px; background: #f7f6f3; border-radius: 10px; padding: 10px 12px; color: #444; min-height: 40px; }
-  .ui-row + .ui-row { margin-top: 6px; }
-  .ui-row .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; white-space: nowrap; }
+  /* ---------- Иллюстрации в блоках с фото ----------
+     Сцена — набор UI-карточек поверх фото (как у Sana / Lassie). Позиция карточки — --x/--y/--w,
+     на телефоне — --mx/--my/--mw. Тайминги — атрибуты data-on/act/done/swap/flowing (мс от начала цикла):
+     в этот момент элемент получает класс is-<имя>. Цикл крутится, пока блок на экране. */
+  .scene { position: absolute; inset: 0; z-index: 2; font-size: 13px; color: #333; }
+  .scene.reset, .scene.reset * { transition: none !important; }
+  .fc { position: absolute; left: var(--x); top: var(--y); width: var(--w, auto); background: rgba(255,255,255,.97); border-radius: 16px; padding: 12px; box-shadow: 0 18px 44px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.03); }
+  .fc.c { translate: -50% 0; }
+  .fc.pillfc { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 7px 14px 7px 9px; white-space: nowrap; }
+  @media (max-width: 640px) {
+    .fc { left: var(--mx, var(--x)); top: var(--my, var(--y)); width: var(--mw, var(--w, auto)); padding: 10px; font-size: 12.5px; }
+    .scene .no-sm { display: none; }
+  }
+  .scene [data-on] { opacity: 0; transform: translateY(12px) scale(.97); transition: opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .scene [data-on].is-on { opacity: 1; transform: none; }
+  .scene.out .fc, .scene.out .link { opacity: 0 !important; transform: translateY(-6px) !important; transition: opacity .45s, transform .45s !important; }
+  .fc-head { display: flex; align-items: center; gap: 8px; font-size: 13.5px; padding: 0 2px 8px; }
+  .fc-head .tag { margin-left: auto; }
+  .av { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-style: normal; font-size: 11.5px; font-weight: 500; color: #fff; flex: none; }
+  .av.ru { background: #2f5d8a; }
+  .av.in { background: var(--accent); }
+  .org { display: flex; align-items: center; gap: 10px; }
+  .org b, .meet b, .doc b { display: block; font-weight: 500; font-size: 13.5px; color: var(--ink); }
+  .org span, .meet span, .doc span { color: var(--ink-3); font-size: 12px; }
+  .org .tag { margin-left: auto; }
+  /* статус-пилюля: спиннер и первый текст → галочка и второй текст по классу .swap */
+  .status .dot-ok, .status .t2 { display: none; }
+  .status.is-swap .spin, .status.is-swap .t1 { display: none; }
+  .status.is-swap .dot-ok { display: grid; }
+  .status.is-swap .t2 { display: inline; }
+  /* линия связи: прорисовка по .on, бегущий пунктир по .live */
+  .link { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .link path { fill: none; stroke-linecap: round; }
+  .link .base { stroke: rgba(255,255,255,.95); stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1s cubic-bezier(.6,0,.3,1); filter: drop-shadow(0 1px 3px rgba(0,0,0,.35)); }
+  .link.is-on .base { stroke-dashoffset: 0; }
+  .link .flow { stroke: var(--accent); stroke-width: 3; stroke-dasharray: .02 .04; opacity: 0; transition: opacity .4s; }
+  .link.is-flowing .flow { opacity: 1; animation: march 1.2s linear infinite; }
+  @keyframes march { to { stroke-dashoffset: -.06; } }
+  .fc.mid { translate: -50% -50%; }
+  .meet { display: flex; align-items: center; gap: 12px; }
+  .cal { width: 40px; flex: none; border-radius: 10px; overflow: hidden; text-align: center; box-shadow: 0 0 0 1px rgba(0,0,0,.06); }
+  .cal span { display: block; background: var(--accent); color: #fff; font-size: 9.5px; letter-spacing: .06em; padding: 2px 0; }
+  .cal b { display: block; font-family: var(--serif); font-weight: 400; font-size: 18px; line-height: 1.5; color: var(--ink); }
+  .avs { display: flex; margin-left: auto; }
+  .avs .av { width: 28px; height: 28px; border-radius: 50%; font-size: 10px; box-shadow: 0 0 0 2px #fff; }
+  .avs .av + .av { margin-left: -8px; }
+  /* вехи проекта */
+  .ms { list-style: none; }
+  .ms li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--ink-3); transition: background .3s, color .3s; }
+  .ms li i { width: 16px; height: 16px; flex: none; border-radius: 50%; border: 1.5px dashed #c8c3ba; display: grid; place-items: center; }
+  .ms li i svg { width: 9px; height: 9px; opacity: 0; }
+  .ms li span { margin-left: auto; font-size: 11.5px; color: var(--ink-3); }
+  .ms li.is-act { color: #333; background: #f7f6f3; }
+  .ms li.is-act i { border: 1.5px solid #d8d4cc; border-top-color: #777; animation: spin 1s linear infinite; }
+  .ms li.is-done { color: #333; background: transparent; }
+  .ms li.is-done i { border: 0; background: #3c7a4b; animation: none; }
+  .ms li.is-done i svg { opacity: 1; }
+  .segs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 10px 2px 2px; }
+  .segs b { height: 4px; border-radius: 4px; background: #eeebe5; overflow: hidden; }
+  .segs b::after { content: ""; display: block; height: 100%; background: #3c7a4b; transform: scaleX(0); transform-origin: left; transition: transform .6s ease; }
+  .segs b.is-done::after { transform: none; }
+  .team { display: flex; align-items: center; padding: 2px; }
+  .team .av { border-radius: 50%; box-shadow: 0 0 0 2px #fff; }
+  .team .av + .av { margin-left: -8px; }
+  .team em { font-style: normal; margin-left: 10px; color: var(--ink-3); font-size: 12px; white-space: nowrap; }
+  .doc { display: flex; align-items: center; gap: 12px; }
+  .file { width: 34px; height: 40px; flex: none; border-radius: 6px; background: #f3efe8; display: grid; place-items: end center; padding-bottom: 5px; font-family: var(--mono); font-size: 9px; color: #b0482a; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05); }
+  .doc .ok { margin-left: auto; font-family: var(--mono); font-size: 11px; color: #3c7a4b; background: #e8f1e9; border-radius: 6px; padding: 3px 7px; white-space: nowrap; }
+  /* вопрос и ответ */
+  .askbar .q { flex: 1; min-width: 0; color: #333; overflow: hidden; text-overflow: ellipsis; }
+  .askbar .q::after { content: ""; display: inline-block; width: 1px; height: 1em; background: #444; margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  .askbar .go { width: 28px; height: 28px; margin-left: auto; border-radius: 50%; background: var(--ink); display: grid; place-items: center; flex: none; transition: background .3s; }
+  .askbar.sent .go { background: var(--accent); }
+  .ans { opacity: 0; transform: translateY(12px); transition: opacity .5s, transform .6s cubic-bezier(.2,.8,.2,1); }
+  .ans.think, .ans.ready { opacity: 1; transform: none; }
+  .ans .fc-head .spin { margin-left: auto; }
+  .ans.ready .fc-head .spin { display: none; }
+  .skel { display: grid; gap: 7px; padding: 2px 2px 4px; }
+  .skel i { height: 9px; border-radius: 5px; background: linear-gradient(90deg, #efede8 0%, #f8f7f4 50%, #efede8 100%) 0 0 / 200% 100%; animation: shimmer 1.2s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  .ans.ready .skel { display: none; }
+  .ans-body { display: none; padding: 0 2px; line-height: 1.5; color: #333; }
+  .ans.ready .ans-body { display: block; animation: fadeUp .5s ease both; }
+  .ans-body .evrow { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; margin-top: 6px; background: #f7f6f3; border-radius: 9px; }
+  .ans-body .evrow span { color: var(--ink-3); white-space: nowrap; }
+  .srcs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding: 0 2px; opacity: 0; transition: opacity .4s; }
+  .srcs.on { opacity: 1; }
+  .src { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #555; background: #f3f1ec; border-radius: 999px; padding: 3px 9px 3px 4px; }
+  .src::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(var(--accent) 0 50%, #2f8a4e 0); }
+  .follow { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; padding: 10px 2px 0; border-top: 1px solid var(--line); opacity: 0; transition: opacity .4s; }
+  .follow.on { opacity: 1; }
+  .follow span { border-radius: 999px; padding: 5px 11px; font-size: 12px; color: #444; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); white-space: nowrap; }
+  .follow span::before { content: "↳ "; color: var(--ink-3); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } }
   .spin { width: 14px; height: 14px; flex: none; border-radius: 50%; border: 1.5px solid #d8d4cc; border-top-color: #777; animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .dot-ok { width: 14px; height: 14px; flex: none; border-radius: 50%; background: #3c7a4b; display: grid; place-items: center; }
   .dot-ok svg { width: 9px; height: 9px; }
   .dot-wait { width: 14px; height: 14px; flex: none; border-radius: 50%; border: 1.5px dashed #c8c3ba; }
-  .steps { position: relative; padding-left: 4px; }
-  .steps .s { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; color: #444; }
-  .steps .s.muted { color: var(--ink-3); }
-  .steps .s .ui-row { flex: 1; margin-top: 6px; }
-  .bar { height: 4px; border-radius: 4px; background: #eeebe5; margin-top: 14px; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 30%; background: #6d8fd6; border-radius: 4px; animation: grow 6s ease-in-out infinite; }
-  @keyframes grow { 0% { width: 18%; } 70%, 100% { width: 74%; } }
-  .ui small { display: block; color: var(--ink-3); font-size: 11.5px; margin-top: 8px; }
-  .ask { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 999px; padding: 8px 8px 8px 16px; width: min(440px, calc(100% - 32px)); box-shadow: 0 20px 50px rgba(0,0,0,.2); position: relative; z-index: 2; font-size: 14px; }
-  .ask .q { flex: 1; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ask .q::after { content: ""; display: inline-block; width: 1px; height: 1em; background: #444; margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-  .ask .go { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; flex: none; }
 
   /* ---------- Directions (разлёт карточек) ---------- */
   /* Как #infographic у Lassie: секция прилипает к экрану, карточки разлетаются из центра,
@@ -309,9 +385,28 @@
     </div>
     <div class="stage rv">
       <div class="paint" aria-hidden="true"><img src="img/cooperation.webp" srcset="img/cooperation-mobile.webp 768w, img/cooperation.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
-      <div class="ui">
-        <div class="ui-head"><svg class="mark"><use href="#mark"/></svg>Совет за работой…</div>
-        <div class="ui-row"><span class="spin"></span><span id="workLine">Знакомим компании двух стран</span><span class="meta" id="workMeta">Деловые связи</span></div>
+      <!-- Сцена 1: Совет находит партнёра в Индии и назначает первую встречу -->
+      <div class="scene" data-loop="8200" aria-hidden="true">
+        <!-- линия строится в скрипте между карточками data-a и data-b, плашка .mid — в её середине -->
+        <svg class="link" data-a=".org-a" data-b=".org-b" data-on="1700" data-flowing="2700">
+          <path class="base" pathLength="1"/><path class="flow" pathLength="1"/>
+        </svg>
+        <div class="fc pillfc status c" style="--x:50%;--y:7%;--my:5%" data-on="0" data-swap="2000">
+          <span class="spin"></span><span class="dot-ok"><svg><use href="#check"/></svg></span>
+          <span class="t1">Совет ищет партнёра в Индии…</span><span class="t2">Партнёр найден</span>
+        </div>
+        <div class="fc org-a" style="--x:6%;--y:24%;--w:280px;--mx:5%;--my:17%;--mw:62%" data-on="250">
+          <div class="org"><i class="av ru">ЛК</i><div><b>Логистическая компания</b><span>Москва</span></div><span class="tag no-sm">RU</span></div>
+        </div>
+        <div class="fc org-b" style="--x:64%;--y:54%;--w:280px;--mx:33%;--my:54%;--mw:62%" data-on="1300">
+          <div class="org"><i class="av in">ФП</i><div><b>Фармпроизводитель</b><span>Хайдарабад</span></div><span class="tag no-sm">IN</span></div>
+        </div>
+        <div class="fc pillfc mid" data-on="2400">
+          <span class="dot-ok"><svg><use href="#check"/></svg></span>Совпадение по запросу
+        </div>
+        <div class="fc" style="--x:9%;--y:68%;--w:300px;--mx:5%;--my:73%;--mw:90%" data-on="3200">
+          <div class="meet"><div class="cal"><span>ЧТ</span><b>12</b></div><div><b>Первая встреча</b><span>14:00 МСК · 16:30 IST · онлайн</span></div><div class="avs"><i class="av ru">ЛК</i><i class="av in">ФП</i></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -326,16 +421,29 @@
     </div>
     <div class="stage rv">
       <div class="paint" aria-hidden="true"><img src="img/logistics.webp" srcset="img/logistics-mobile.webp 768w, img/logistics.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
-      <div class="ui">
-        <div class="ui-head"><svg class="mark"><use href="#mark"/></svg>Совместный проект · Транспорт и логистика</div>
-        <div class="steps">
-          <div class="s"><span class="dot-ok"><svg><use href="#check"/></svg></span>Партнёры с обеих сторон определены</div>
-          <div class="s"><span class="spin" style="margin-top:2px"></span><div style="flex:1">Экспертиза отраслевого комитета
-            <div class="ui-row"><span class="mono" style="font-size:11px">⟳</span>Встреча рабочей группы<span class="meta">в процессе</span></div></div></div>
-          <div class="s muted"><span class="dot-wait"></span>Подготовка соглашения</div>
+      <!-- Сцена 2: проект проходит вехи от идеи до проекта соглашения -->
+      <div class="scene" data-loop="9000" aria-hidden="true">
+        <div class="fc" style="--x:7%;--y:13%;--w:370px;--mx:5%;--my:5%;--mw:90%" data-on="0">
+          <div class="fc-head"><svg class="mark"><use href="#mark"/></svg>Совместный проект<span class="tag">Логистика</span></div>
+          <ol class="ms">
+            <li data-done="600"><i><svg><use href="#check"/></svg></i>Идея проекта<span>RU + IN</span></li>
+            <li data-act="1000" data-done="2200"><i><svg><use href="#check"/></svg></i>Партнёры с обеих сторон</li>
+            <li data-act="2400" data-done="4600"><i><svg><use href="#check"/></svg></i>Экспертиза отраслевого комитета</li>
+            <li data-act="4800" data-done="5900"><i><svg><use href="#check"/></svg></i>Проект соглашения</li>
+          </ol>
+          <div class="segs"><b data-done="600"></b><b data-done="2200"></b><b data-done="4600"></b><b data-done="5900"></b></div>
         </div>
-        <div class="bar"><i></i></div>
-        <small>Иллюстрация: так выглядит путь проекта в Совете</small>
+        <div class="fc no-sm" style="--x:63%;--y:11%;--w:220px" data-on="1300">
+          <div class="fc-head">Рабочая группа</div>
+          <div class="team"><i class="av ru">ИК</i><i class="av in">AS</i><i class="av ru">МП</i><i class="av in">RG</i><em>Россия · Индия</em></div>
+        </div>
+        <div class="fc pillfc status" style="--x:47%;--y:43%;--mx:5%;--my:61%" data-on="2600" data-swap="4600">
+          <span class="spin"></span><span class="dot-ok"><svg><use href="#check"/></svg></span>
+          <span class="t1">Отраслевой комитет изучает проект</span><span class="t2">Комитет поддержал проект</span>
+        </div>
+        <div class="fc" style="--x:58%;--y:64%;--w:280px;--mx:5%;--my:74%;--mw:90%" data-on="6000">
+          <div class="doc"><span class="file">PDF</span><div><b>Проект соглашения</b><span>обновлён только что</span></div><span class="ok">Готов</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -350,10 +458,19 @@
     </div>
     <div class="stage rv">
       <div class="paint" aria-hidden="true"><img src="img/expertise.webp" srcset="img/expertise-mobile.webp 768w, img/expertise.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
-      <div class="ask" role="img" aria-label="Пример вопроса о рынке Индии">
-        <svg class="mark"><use href="#mark"/></svg>
-        <span class="q" id="askQ"></span>
-        <span class="go"><svg width="14" height="14" style="color:#fff;transform:rotate(-90deg)"><use href="#arrow"/></svg></span>
+      <!-- Сцена 3: вопрос участника и ответ Совета с источником. Вопросы и ответы — в ASK в скрипте -->
+      <div class="scene" id="askScene" aria-hidden="true">
+        <div class="fc pillfc askbar c" style="--x:50%;--y:11%;--w:min(520px,88%);--my:6%">
+          <svg class="mark"><use href="#mark"/></svg><span class="q"></span>
+          <span class="go"><svg width="14" height="14" style="color:#fff;transform:rotate(-90deg)"><use href="#arrow"/></svg></span>
+        </div>
+        <div class="fc ans c" style="--x:50%;--y:27%;--w:min(520px,88%);--my:20%">
+          <div class="fc-head"><svg class="mark"><use href="#mark"/></svg>Ответ Совета<span class="spin"></span></div>
+          <div class="skel"><i></i><i></i><i style="width:60%"></i></div>
+          <div class="ans-body"></div>
+          <div class="srcs"></div>
+          <div class="follow"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -561,30 +678,95 @@
   let ti = 0;
   if (!reduce) setInterval(() => { ticks[ti].classList.remove('on'); ti = (ti + 1) % ticks.length; ticks[ti].classList.add('on'); }, 2800);
 
-  // feature 1: work line
-  const work = [
-    ['Знакомим компании двух стран', 'Деловые связи'],
-    ['Собираем экспертную встречу', 'Отраслевой диалог'],
-    ['Готовим обзор рынка', 'Аналитика'],
-    ['Прорабатываем совместную инициативу', 'Проектная работа'],
+  // иллюстрации в блоках с фото: цикл сцены, пока она на экране (разметка и тайминги — в .scene)
+  const MARKS = ['on', 'act', 'done', 'swap', 'flowing'];
+  // сцена 3: ответы взяты из текстов сайта, чтобы иллюстрация не выдумывала факты
+  const ASK = [
+    { q: 'Какие направления развивает Совет?', src: ['О Совете'],
+      a: 'Финансы и инвестиции, промышленность, технологии, транспорт и логистика, энергетика, АПК, здравоохранение, образование и кадры.' },
+    { q: 'Как платить контрагенту в Индии?', src: ['Бизнес с Индией'],
+      a: 'Откройте счёт в рупиях: переводы в валюте контрагента, без конвертации через доллар или евро — от 10 минут.' },
+    { q: 'Какие мероприятия пройдут в 2027 году?', src: ['Мероприятия Совета'],
+      a: 'Ближайшие — в январе и феврале:<div class="evrow">Vibrant Gujarat Global Summit<span>10—12 янв</span></div><div class="evrow">India Energy Week<span>28—31 янв</span></div><div class="evrow">Bharat Mobility<span>4—9 фев</span></div>' },
   ];
-  const wl = document.getElementById('workLine'), wm = document.getElementById('workMeta');
-  let wi = 0;
-  if (!reduce) setInterval(() => { wi = (wi + 1) % work.length; [wl.textContent, wm.textContent] = work[wi]; }, 2600);
-
-  // feature 3: typing questions
-  const qs = ['Какие отрасли Индии открыты для инвестиций?', 'Как платить контрагенту в рупиях?', 'Какие выставки пройдут в 2027 году?', 'Как найти дистрибьютора в Мумбаи?'];
-  const q = document.getElementById('askQ');
-  if (reduce) q.textContent = qs[0];
-  else (async function loop() {
-    for (let k = 0; ; k = (k + 1) % qs.length) {
-      const s = qs[k];
-      for (let i = 1; i <= s.length; i++) { q.textContent = s.slice(0, i); await new Promise(r => setTimeout(r, 38)); }
-      await new Promise(r => setTimeout(r, 1800));
-      for (let i = s.length; i >= 0; i--) { q.textContent = s.slice(0, i); await new Promise(r => setTimeout(r, 14)); }
-      await new Promise(r => setTimeout(r, 300));
+  const FOLLOW = ['Как стать участником?', 'Отраслевые комитеты'];
+  const askScene = document.getElementById('askScene');
+  const fillAnswer = (scene, item) => {
+    scene.querySelector('.ans-body').innerHTML = item.a;
+    scene.querySelector('.srcs').innerHTML = item.src.map(s => `<span class="src">${s}</span>`).join('');
+    scene.querySelector('.follow').innerHTML = FOLLOW.map(s => `<span>${s}</span>`).join('');
+  };
+  const askPlan = (scene, later, n) => {
+    const item = ASK[n % ASK.length], q = scene.querySelector('.q'), ans = scene.querySelector('.ans');
+    fillAnswer(scene, item);
+    let t = 400;
+    for (let i = 1; i <= item.q.length; i++) later(t + i * 34, () => { q.textContent = item.q.slice(0, i); });
+    t += item.q.length * 34 + 350;
+    later(t, () => { scene.querySelector('.askbar').classList.add('sent'); ans.classList.add('think'); });
+    later(t + 1300, () => ans.classList.add('ready'));
+    later(t + 1800, () => scene.querySelector('.srcs').classList.add('on'));
+    later(t + 2300, () => scene.querySelector('.follow').classList.add('on'));
+    return t + 6200;
+  };
+  const askReset = scene => {
+    scene.querySelector('.q').textContent = '';
+    scene.querySelector('.askbar').classList.remove('sent');
+    scene.querySelectorAll('.ans, .srcs, .follow').forEach(el => el.classList.remove('think', 'ready', 'on'));
+  };
+  document.querySelectorAll('.scene').forEach(scene => {
+    const isAsk = scene === askScene;
+    const marked = MARKS.flatMap(m => [...scene.querySelectorAll(`[data-${m}]`)].map(el => [el, m, +el.dataset[m]]));
+    let timers = [], n = 0;
+    const later = (ms, fn) => timers.push(setTimeout(fn, ms));
+    // линия между карточками: справа-налево на десктопе, сверху-вниз на телефоне; offset* не зависят от transform
+    const link = scene.querySelector('.link[data-a]'), mid = scene.querySelector('.mid');
+    const layoutLink = () => {
+      if (!link) return;
+      const a = scene.querySelector(link.dataset.a), b = scene.querySelector(link.dataset.b);
+      const W = scene.offsetWidth, H = scene.offsetHeight, v = innerWidth <= 640;
+      const x1 = v ? a.offsetLeft + a.offsetWidth * .3 : a.offsetLeft + a.offsetWidth + 8;
+      const y1 = v ? a.offsetTop + a.offsetHeight + 8 : a.offsetTop + a.offsetHeight / 2;
+      const x2 = v ? b.offsetLeft + b.offsetWidth * .7 : b.offsetLeft - 8;
+      const y2 = v ? b.offsetTop - 8 : b.offsetTop + b.offsetHeight / 2;
+      const d = v ? `M${x1} ${y1} C${x1} ${(y1 + y2) / 2}, ${x2} ${(y1 + y2) / 2}, ${x2} ${y2}`
+                  : `M${x1} ${y1} C${(x1 + x2) / 2} ${y1}, ${(x1 + x2) / 2} ${y2}, ${x2} ${y2}`;
+      link.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      link.querySelectorAll('path').forEach(p => p.setAttribute('d', d));
+      if (mid) { mid.style.left = (x1 + x2) / 2 + 'px'; mid.style.top = (y1 + y2) / 2 + 'px'; }
+    };
+    layoutLink();
+    addEventListener('resize', layoutLink);
+    document.fonts?.ready.then(layoutLink);
+    const stop = () => { timers.forEach(clearTimeout); timers = []; };
+    const reset = () => {
+      scene.classList.add('reset');
+      scene.classList.remove('out');
+      marked.forEach(([el, m]) => el.classList.remove(`is-${m}`));
+      if (isAsk) askReset(scene);
+      void scene.offsetWidth;
+      scene.classList.remove('reset');
+    };
+    const cycle = () => {
+      stop(); reset(); layoutLink();
+      let total = +scene.dataset.loop;
+      marked.forEach(([el, m, ms]) => later(ms, () => el.classList.add(`is-${m}`)));
+      if (isAsk) total = askPlan(scene, later, n);
+      n++;
+      later(total - 600, () => scene.classList.add('out'));
+      later(total, cycle);
+    };
+    if (reduce) {
+      marked.forEach(([el, m]) => el.classList.add(`is-${m}`));
+      if (isAsk) {
+        fillAnswer(scene, ASK[0]);
+        scene.querySelector('.q').textContent = ASK[0].q;
+        scene.querySelectorAll('.ans').forEach(el => el.classList.add('ready'));
+        scene.querySelectorAll('.srcs, .follow').forEach(el => el.classList.add('on'));
+      }
+      return;
     }
-  })();
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) { if (!timers.length) cycle(); } else { stop(); reset(); } }, { threshold: .35 }).observe(scene);
+  });
 
   // India dot map (упрощённый контур, lon/lat)
   const poly = [[68.4,23.6],[69,22.4],[70,21],[71,20.7],[72.6,21.2],[72.8,19],[73.4,16.5],[74,15],[74.8,12.9],[76,10.2],[77.5,8.1],[78.2,8.9],[79.3,10.3],[79.9,12],[80.3,13.1],[80.2,15.5],[82.3,16.6],[83.4,17.7],[85.1,19.4],[86.6,20.3],[87.5,21.6],[88.6,21.6],[89,22.5],[88.7,24.2],[88.1,24.8],[88.4,26.3],[89.8,26.4],[92,26.9],[92.5,25],[92.3,23.7],[93,22],[93.4,23.9],[94.2,24],[95.2,26.6],[96.9,27.5],[95.4,28.3],[94,28.7],[92,27.8],[88.8,27.3],[88.1,27.9],[88,26.5],[84,27.4],[81,28.6],[80,30.4],[79,31.4],[78.7,32.6],[79.5,33.4],[78.8,34.6],[77.8,35.5],[76,35.9],[74.5,35],[73.8,34.4],[74.6,32.4],[75.3,32.2],[74.6,31],[74,30],[73.4,29.5],[72.4,28],[70.8,27.7],[69.6,27],[70.2,25.8],[71,24.4],[69.4,24.3]];
