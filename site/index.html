@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Деловой совет Россия–Индия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300;1,7..72,400&family=Onest:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F9F8F5;
+    --ink: #120C08;
+    --ink-2: #666;
+    --ink-3: #9a968f;
+    --line: rgba(18, 12, 8, .08);
+    --card: #fff;
+    --accent: #F07A2B;          /* шафран */
+    --accent-ink: #fff;
+    --serif: "Literata", Georgia, serif;
+    --sans: "Onest", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --r-xl: 48px;
+    --r-lg: 20px;
+    --gutter: clamp(16px, 4vw, 80px);
+    --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; color: inherit; }
+  .serif { font-family: var(--serif); font-weight: 300; }
+  em, .it { font-style: italic; }
+  .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* ---------- Nav ---------- */
+  .nav { position: fixed; inset: 12px 12px auto; z-index: 50; display: flex; justify-content: center; pointer-events: none; }
+  .pillgroup { pointer-events: auto; display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 20px rgba(0,0,0,.06); }
+  .pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 11px; background: #fff; font-size: 14px; letter-spacing: .005em; white-space: nowrap; transition: background .2s, transform .2s; }
+  .pill:hover { background: #f3f1ec; }
+  .pill.brand { font-family: var(--serif); font-size: 15px; }
+  .pill.cta { background: var(--accent); color: var(--accent-ink); }
+  .pill.cta:hover { background: #e06a1c; }
+  .nav .right { position: absolute; right: 0; top: 0; }
+  .mark { width: 20px; height: 20px; flex: none; }
+  .nav .show-sm { display: none; }
+  @media (max-width: 640px) {
+    .nav .hide-sm { display: none; }
+    .nav .show-sm { display: inline; }
+    .nav { justify-content: flex-start; }
+  }
+  @media (max-width: 400px) {
+    .pill { padding: 0 10px; font-size: 13px; }
+  }
+
+  /* ---------- Painterly backgrounds ---------- */
+  .paint { position: absolute; inset: 0; overflow: hidden; background: var(--p0); }
+  .paint::before { content: ""; position: absolute; inset: -12%; background: var(--streaks); filter: blur(var(--blur, 22px)) saturate(1.1); animation: drift 28s ease-in-out infinite alternate; }
+  .paint::after { content: ""; position: absolute; inset: 0; background-image: var(--noise); mix-blend-mode: overlay; opacity: .35; }
+  @keyframes drift { from { transform: translateX(-3%) scale(1.05); } to { transform: translateX(3%) scale(1.12); } }
+
+  .p-hero { --p0: #3b2a1e; --blur: 30px; --streaks:
+      radial-gradient(60% 50% at 70% 30%, rgba(255,196,120,.55), transparent 70%),
+      radial-gradient(40% 60% at 20% 80%, rgba(40,90,90,.6), transparent 70%),
+      linear-gradient(100deg, #2a1d15 0 8%, #6b4a2e 12%, #c79358 18%, #3a2a20 24%, #8a6a4a 31%, #e0b57a 36%, #4a3426 44%, #2f4b48 52%, #b88a5a 58%, #e9c792 63%, #5a3e2c 70%, #2c2019 78%, #a07650 86%, #3a2a20 100%); }
+  .p-amber { --p0: #a99a5a; --blur: 34px; --streaks:
+      radial-gradient(30% 60% at 25% 40%, rgba(240,220,150,.55), transparent 70%),
+      radial-gradient(25% 50% at 70% 65%, rgba(90,100,150,.45), transparent 70%),
+      linear-gradient(90deg, #b8a24e 0 6%, #6e6f9a 10%, #d9c27a 15%, #8c8a66 21%, #4f5a8c 26%, #e2cc80 31%, #9b956c 37%, #c9b25c 43%, #5b628f 48%, #ddd2a2 54%, #8f8a5e 60%, #c7ae55 66%, #5a6290 72%, #e4d290 78%, #9a8d5a 85%, #c3ad5d 92%, #6a6c94 100%); }
+  .p-sage  { --p0: #6f8160; --streaks:
+      radial-gradient(30% 40% at 45% 45%, rgba(235,240,230,.85), transparent 70%),
+      radial-gradient(25% 30% at 70% 60%, rgba(230,236,226,.7), transparent 70%),
+      linear-gradient(80deg, #4f6440 0 10%, #8a9e78 18%, #c9d3be 24%, #5f7450 32%, #a9b897 42%, #3f5233 52%, #93a582 62%, #d5dccb 70%, #5c704c 80%, #8fa07c 100%); }
+  .p-rose  { --p0: #7a7e62; --streaks:
+      radial-gradient(35% 30% at 30% 30%, rgba(214,170,170,.7), transparent 70%),
+      radial-gradient(30% 40% at 75% 70%, rgba(200,160,165,.6), transparent 70%),
+      linear-gradient(75deg, #6c745a 0 12%, #a39278 22%, #5d6a4e 34%, #b9a19a 46%, #747b5c 58%, #c6aeb0 68%, #66704f 80%, #9a8f78 100%); }
+  .p-saffron { --p0: #e98a2e; --streaks:
+      radial-gradient(40% 50% at 20% 40%, rgba(255,214,140,.8), transparent 70%),
+      radial-gradient(35% 45% at 80% 60%, rgba(120,140,70,.55), transparent 70%),
+      linear-gradient(95deg, #f0a040 0 10%, #d86b1e 20%, #f6c070 30%, #c9741f 42%, #f2a650 55%, #8c8a3c 66%, #eaa048 78%, #d9772a 100%); }
+  .p-ink { --p0: #2f3a3a; --streaks:
+      radial-gradient(50% 50% at 30% 40%, rgba(110,150,140,.7), transparent 70%),
+      radial-gradient(40% 50% at 75% 65%, rgba(200,150,90,.55), transparent 70%),
+      linear-gradient(90deg, #233030 0 15%, #3d5552 35%, #1e2828 55%, #4c5f58 75%, #283433 100%); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; color: #fff; text-align: center; overflow: hidden; }
+  .hero .paint::before { animation-duration: 40s; }
+  .hero-inner { position: relative; z-index: 2; padding: 120px var(--gutter) 140px; }
+  .hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 7.4vw, 92px); line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
+  .hero h1 em { font-weight: 300; }
+  .hero .lede { margin-top: 28px; font-size: 16px; opacity: .92; }
+  .ticker { margin-top: 14px; height: 22px; position: relative; font-size: 14px; color: rgba(255,255,255,.72); }
+  .ticker span { position: absolute; left: 50%; top: 0; transform: translate(-50%, 8px); opacity: 0; white-space: nowrap; display: inline-flex; gap: 8px; align-items: center; transition: opacity .5s, transform .5s; }
+  .ticker span.on { opacity: 1; transform: translate(-50%, 0); }
+  .ticker svg { width: 15px; height: 15px; opacity: .8; }
+  .signup { position: absolute; z-index: 2; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.18); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset; width: min(360px, calc(100% - 32px)); }
+  .signup input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; padding: 0 12px; color: #fff; font-size: 14px; }
+  .signup input::placeholder { color: rgba(255,255,255,.75); }
+  .signup button { height: 38px; padding: 0 14px; border: 0; border-radius: 10px; background: #fff; color: var(--ink); font-size: 14px; cursor: pointer; white-space: nowrap; }
+
+  /* ---------- Sections ---------- */
+  section { position: relative; }
+  .statement { padding: clamp(120px, 18vw, 240px) 0 clamp(80px, 12vw, 160px); text-align: center; }
+  .h-xl { font-family: var(--serif); font-weight: 300; font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -.01em; text-wrap: balance; }
+  .h-md { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; letter-spacing: -.005em; }
+  .sub { color: var(--ink-2); font-size: 14px; letter-spacing: .005em; max-width: 46ch; margin-top: 10px; }
+  .statement .pillars { margin: 56px auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; max-width: 900px; background: var(--line); border-radius: var(--r-lg); overflow: hidden; text-align: left; }
+  .pillars > div { background: var(--bg); padding: 22px 22px 24px; }
+  .pillars .n { color: var(--ink-3); }
+  .pillars h4 { font-family: var(--serif); font-weight: 400; font-size: 19px; margin: 18px 0 4px; }
+  .pillars p { color: var(--ink-2); font-size: 13.5px; }
+  @media (max-width: 760px) { .statement .pillars { grid-template-columns: 1fr 1fr; } }
+
+  .feature { padding: 40px 0 72px; }
+  .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
+  @media (max-width: 640px) { .feature .stage { aspect-ratio: 4 / 5; border-radius: 28px; } }
+
+  /* floating UI cards (как окна статуса у Lassie) */
+  .ui { position: relative; z-index: 2; width: min(400px, calc(100% - 32px)); background: rgba(255,255,255,.96); border-radius: 16px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.03); font-size: 13px; }
+  .ui-head { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 2px 2px 10px; }
+  .ui-row { display: flex; align-items: center; gap: 10px; background: #f7f6f3; border-radius: 10px; padding: 10px 12px; color: #444; min-height: 40px; }
+  .ui-row + .ui-row { margin-top: 6px; }
+  .ui-row .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; white-space: nowrap; }
+  .spin { width: 14px; height: 14px; flex: none; border-radius: 50%; border: 1.5px solid #d8d4cc; border-top-color: #777; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .dot-ok { width: 14px; height: 14px; flex: none; border-radius: 50%; background: #3c7a4b; display: grid; place-items: center; }
+  .dot-ok svg { width: 9px; height: 9px; }
+  .dot-wait { width: 14px; height: 14px; flex: none; border-radius: 50%; border: 1.5px dashed #c8c3ba; }
+  .steps { position: relative; padding-left: 4px; }
+  .steps .s { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; color: #444; }
+  .steps .s.muted { color: var(--ink-3); }
+  .steps .s .ui-row { flex: 1; margin-top: 6px; }
+  .bar { height: 4px; border-radius: 4px; background: #eeebe5; margin-top: 14px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 30%; background: #6d8fd6; border-radius: 4px; animation: grow 6s ease-in-out infinite; }
+  @keyframes grow { 0% { width: 18%; } 70%, 100% { width: 74%; } }
+  .ui small { display: block; color: var(--ink-3); font-size: 11.5px; margin-top: 8px; }
+  .ask { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 999px; padding: 8px 8px 8px 16px; width: min(440px, calc(100% - 32px)); box-shadow: 0 20px 50px rgba(0,0,0,.2); position: relative; z-index: 2; font-size: 14px; }
+  .ask .q { flex: 1; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ask .q::after { content: ""; display: inline-block; width: 1px; height: 1em; background: #444; margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ask .go { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; flex: none; }
+
+  /* ---------- Directions (разлёт карточек) ---------- */
+  .directions { padding: clamp(100px, 14vw, 180px) 0; text-align: center; overflow: hidden; }
+  .cloud { position: relative; max-width: 1120px; margin: 0 auto; min-height: 640px; }
+  .cloud .title { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+  .chip { position: absolute; display: flex; align-items: center; gap: 10px; background: #fff; padding: 10px 14px 10px 10px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.03); font-size: 14px; white-space: nowrap; animation: bob 7s ease-in-out infinite alternate; }
+  .chip .sw { width: 34px; height: 34px; border-radius: 9px; position: relative; overflow: hidden; flex: none; }
+  .chip .sw .paint::before { --blur: 6px; }
+  .chip:nth-child(2n) { animation-duration: 9s; animation-delay: -3s; }
+  .chip:nth-child(3n) { animation-duration: 8s; animation-delay: -5s; }
+  @keyframes bob { from { transform: translateY(-6px); } to { transform: translateY(8px); } }
+  @media (max-width: 760px) {
+    .cloud { min-height: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 16px; }
+    .cloud .title { position: static; width: 100%; margin-bottom: 28px; }
+    .chip { position: static; animation: none; }
+  }
+
+  /* ---------- Quote ---------- */
+  .quote { padding: 40px 0 clamp(100px, 14vw, 180px); }
+  .qcard { display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; background: #fff; border-radius: 28px; padding: 16px; max-width: 900px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,.06); }
+  .qcard .portrait { position: relative; border-radius: 18px; overflow: hidden; min-height: 360px; }
+  .qcard .portrait .initials { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.92); font-family: var(--serif); font-size: 96px; font-weight: 300; font-style: italic; z-index: 2; }
+  .qcard .portrait img { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .qcard .body { display: flex; flex-direction: column; padding: 24px 20px 12px 0; }
+  .qcard blockquote { font-family: var(--serif); font-weight: 300; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.25; letter-spacing: -.005em; }
+  .qcard .who { margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 14px; }
+  .tag { font-family: var(--mono); font-size: 11px; color: #6d6a64; background: #f3f1ec; border-radius: 6px; padding: 3px 7px; }
+  .qcard .role { color: var(--ink-2); font-size: 13px; width: 100%; }
+  @media (max-width: 760px) { .qcard { grid-template-columns: 1fr; } .qcard .portrait { min-height: 0; aspect-ratio: 1; } .qcard .body { padding: 8px 8px 8px; } }
+
+  /* ---------- Events map ---------- */
+  .events { padding: 0 0 clamp(80px, 12vw, 160px); text-align: center; }
+  .mapbox { position: relative; max-width: 780px; margin: 40px auto 0; }
+  .mapbox svg.map { width: 100%; height: auto; display: block; }
+  .evt { position: absolute; width: 230px; text-align: left; background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.03); font-size: 13px; }
+  .evt .h { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .evt .h .tag { margin-left: auto; }
+  .evt .name { font-family: var(--serif); font-size: 17px; line-height: 1.2; }
+  .evt .where { color: var(--ink-2); margin-top: 4px; }
+  .live { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(240,122,43,.18); flex: none; }
+  .counter { position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 12px; background: var(--ink); color: #fff; border-radius: 12px; padding: 6px 14px 6px 6px; font-size: 13px; white-space: nowrap; }
+  .counter b { font-family: var(--serif); font-weight: 400; font-size: 20px; background: rgba(255,255,255,.12); border-radius: 8px; padding: 2px 10px; }
+  @media (max-width: 760px) {
+    .evt { position: static; width: auto; margin: 8px 16px 0; }
+    .counter { position: static; transform: none; margin-top: 20px; }
+  }
+
+  /* ---------- News ---------- */
+  .news { padding: 0 0 clamp(80px, 12vw, 160px); }
+  .news-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+  .news ul { list-style: none; border-top: 1px solid var(--line); }
+  .news li a { display: grid; grid-template-columns: 120px 1fr 24px; gap: 16px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line); transition: padding .25s; }
+  .news li a:hover { padding-left: 10px; }
+  .news li a:hover .arr { transform: translateX(4px); opacity: 1; }
+  .news .date { color: var(--ink-3); }
+  .news .t { font-family: var(--serif); font-weight: 300; font-size: clamp(18px, 2vw, 22px); line-height: 1.3; }
+  .news .arr { opacity: .35; transition: transform .25s, opacity .25s; }
+  @media (max-width: 640px) { .news li a { grid-template-columns: 1fr 20px; } .news .date { grid-column: 1 / -1; } }
+
+  /* ---------- Rupee promo ---------- */
+  .promo { padding: 0 0 clamp(80px, 12vw, 140px); }
+  .promo .stage { position: relative; border-radius: var(--r-xl); overflow: hidden; min-height: 540px; display: grid; align-items: end; color: #fff; isolation: isolate; }
+  .promo .content { position: relative; z-index: 2; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
+  .promo h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -.01em; }
+  .promo p { font-size: 15px; opacity: .95; max-width: 40ch; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 11px; border: 0; cursor: pointer; font-size: 14px; background: var(--ink); color: #fff; transition: transform .2s, background .2s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.light { background: #fff; color: var(--ink); }
+  .fx { position: absolute; z-index: 2; top: clamp(24px, 4vw, 48px); right: clamp(24px, 4vw, 48px); background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 12px; width: 250px; box-shadow: 0 20px 50px rgba(0,0,0,.18); font-size: 13px; }
+  .fx .row { display: flex; justify-content: space-between; align-items: center; background: #f7f6f3; border-radius: 9px; padding: 9px 10px; margin-top: 6px; }
+  .fx .ok { display: inline-flex; gap: 6px; align-items: center; font-family: var(--mono); font-size: 11px; color: #3c7a4b; background: #e8f1e9; border-radius: 6px; padding: 2px 6px; }
+  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .fx { position: relative; top: auto; right: auto; margin: 24px 24px 0; width: auto; } .promo .stage { align-items: stretch; } }
+
+  /* ---------- Form ---------- */
+  .apply { padding: 0 0 clamp(100px, 14vw, 180px); }
+  .apply .intro { text-align: center; max-width: 640px; margin: 0 auto 40px; }
+  .apply .intro .sub { margin: 14px auto 0; max-width: 52ch; }
+  form { max-width: 600px; margin: 0 auto; display: grid; gap: 8px; }
+  .field { background: #fff; border-radius: 16px; padding: 12px 18px 14px; box-shadow: 0 0 0 1px rgba(0,0,0,.03); transition: box-shadow .2s; }
+  .field:focus-within { box-shadow: 0 0 0 1.5px var(--ink); }
+  .field.err { box-shadow: 0 0 0 1.5px #c8452c; }
+  .field label { display: block; font-size: 12px; color: var(--ink-3); }
+  .field input, .field textarea { width: 100%; border: 0; outline: 0; background: none; font-size: 15px; padding-top: 2px; resize: vertical; }
+  .field textarea { min-height: 72px; }
+  .field ::placeholder { color: #bdb9b1; }
+  .field .msg { display: none; font-size: 12px; color: #c8452c; margin-top: 4px; }
+  .field.err .msg { display: block; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+  .consent { font-size: 12.5px; color: var(--ink-2); text-align: center; margin-top: 10px; }
+  .consent a { text-decoration: underline; text-underline-offset: 2px; }
+  form .btn { justify-self: center; margin-top: 10px; height: 46px; padding: 0 22px; }
+  .done { display: none; max-width: 600px; margin: 0 auto; background: #fff; border-radius: 20px; padding: 28px; text-align: center; }
+  .done.show { display: block; }
+
+  /* ---------- Footer ---------- */
+  footer { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--bg) 0 55%, #d7e8f0 100%); }
+  .foot { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; padding-top: 56px; padding-bottom: 40px; position: relative; z-index: 2; }
+  .foot .cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; font-size: 14px; }
+  .foot .cols h5 { font-weight: 400; color: var(--ink-3); font-size: 13px; margin-bottom: 8px; }
+  .foot .cols a { display: block; padding: 2px 0; }
+  .foot .cols a:hover { color: var(--accent); }
+  .legal { grid-column: 2; margin-top: 60px; color: #444; line-height: 1.6; }
+  .giant { font-family: var(--serif); font-weight: 300; font-size: clamp(120px, 30vw, 420px); line-height: .78; letter-spacing: -.04em; color: #fff; text-align: center; margin-top: -0.05em; user-select: none; white-space: nowrap; }
+  @media (max-width: 760px) { .foot { grid-template-columns: 1fr; } .legal { grid-column: 1; margin-top: 20px; } }
+
+  /* ---------- Reveal ---------- */
+  .rv { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rv { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Нейтральный знак-заглушка: два полукольца (шафран/зелень). Заменить на утверждённый логотип. -->
+  <symbol id="mark" viewBox="0 0 24 24">
+    <path d="M12 3a9 9 0 0 0 0 18" fill="none" stroke="#F07A2B" stroke-width="3" stroke-linecap="round"/>
+    <path d="M12 21a9 9 0 0 0 0-18" fill="none" stroke="#2F8A4E" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="12" cy="12" r="3.2" fill="#1F3F8F"/>
+  </symbol>
+  <symbol id="check" viewBox="0 0 10 10"><path d="M2 5.2 4.2 7.3 8 3" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="arrow" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="term" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5 6.5 8l-2 1.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" aria-label="Основная навигация">
+  <div class="pillgroup">
+    <a class="pill brand" href="#top"><svg class="mark"><use href="#mark"/></svg><span class="hide-sm">Деловой совет</span></a>
+    <a class="pill" href="#about">О Совете</a>
+    <a class="pill" href="#india">Бизнес с Индией</a>
+  </div>
+  <div class="pillgroup right">
+    <a class="pill cta" href="#apply"><span class="hide-sm">Оставить заявку</span><span class="show-sm">Заявка</span></a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="paint p-hero"></div>
+  <div class="hero-inner">
+    <h1>Россия и Индия.<br><em>Общее дело.</em></h1>
+    <p class="lede">Российско-Индийский деловой совет — площадка бизнес-интересов клиентов обеих стран</p>
+    <div class="ticker" aria-live="polite">
+      <span class="on"><svg><use href="#term"/></svg>Знакомим компании двух стран</span>
+      <span><svg><use href="#term"/></svg>Собираем отраслевой комитет по логистике</span>
+      <span><svg><use href="#term"/></svg>Готовим обзор индийского фармрынка</span>
+      <span><svg><use href="#term"/></svg>Прорабатываем совместный проект в энергетике</span>
+    </div>
+  </div>
+  <form class="signup" id="heroForm" novalidate>
+    <input type="email" placeholder="Ваш email" aria-label="Ваш email" id="heroEmail">
+    <button type="submit">Стать участником</button>
+  </form>
+</header>
+
+<main>
+
+<!-- ============ STATEMENT + PILLARS ============ -->
+<section class="statement" id="about">
+  <div class="wrap">
+    <h2 class="h-xl rv">От стратегического диалога —<br><em>к реальным результатам</em></h2>
+    <div class="pillars rv">
+      <div><span class="mono n">01</span><h4>Деловые связи</h4><p>Контакты и взаимодействие компаний</p></div>
+      <div><span class="mono n">02</span><h4>Отраслевой диалог</h4><p>Экспертные встречи и комитеты</p></div>
+      <div><span class="mono n">03</span><h4>Аналитика</h4><p>Знания о двух рынках</p></div>
+      <div><span class="mono n">04</span><h4>Проектная работа</h4><p>Подготовка совместных инициатив</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURE 1 ============ -->
+<section class="feature">
+  <div class="wrap">
+    <div class="rv">
+      <h3 class="h-md">Деловые связи и сотрудничество</h3>
+      <p class="sub">Помогаем выстраивать контакты между компаниями и находить новые форматы взаимодействия</p>
+    </div>
+    <div class="stage rv">
+      <div class="paint p-amber"></div>
+      <div class="ui">
+        <div class="ui-head"><svg class="mark"><use href="#mark"/></svg>Совет за работой…</div>
+        <div class="ui-row"><span class="spin"></span><span id="workLine">Знакомим компании двух стран</span><span class="meta" id="workMeta">Деловые связи</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURE 2 ============ -->
+<section class="feature">
+  <div class="wrap">
+    <div class="rv">
+      <h3 class="h-md">Совместные инициативы и проекты</h3>
+      <p class="sub">Создаём среду для проработки перспективных проектов и партнёрств — от первой встречи до соглашения</p>
+    </div>
+    <div class="stage rv">
+      <div class="paint p-sage"></div>
+      <div class="ui">
+        <div class="ui-head"><svg class="mark"><use href="#mark"/></svg>Совместный проект · Транспорт и логистика</div>
+        <div class="steps">
+          <div class="s"><span class="dot-ok"><svg><use href="#check"/></svg></span>Партнёры с обеих сторон определены</div>
+          <div class="s"><span class="spin" style="margin-top:2px"></span><div style="flex:1">Экспертиза отраслевого комитета
+            <div class="ui-row"><span class="mono" style="font-size:11px">⟳</span>Встреча рабочей группы<span class="meta">в процессе</span></div></div></div>
+          <div class="s muted"><span class="dot-wait"></span>Подготовка соглашения</div>
+        </div>
+        <div class="bar"><i></i></div>
+        <small>Иллюстрация: так выглядит путь проекта в Совете</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURE 3 ============ -->
+<section class="feature" id="india">
+  <div class="wrap">
+    <div class="rv">
+      <h3 class="h-md">Экспертиза и знания о рынках</h3>
+      <p class="sub">Объединяем знания о рынках, отраслях и возможностях двух стран — и делимся ими с участниками</p>
+    </div>
+    <div class="stage rv">
+      <div class="paint p-rose"></div>
+      <div class="ask" role="img" aria-label="Пример вопроса о рынке Индии">
+        <svg class="mark"><use href="#mark"/></svg>
+        <span class="q" id="askQ"></span>
+        <span class="go"><svg width="14" height="14" style="color:#fff;transform:rotate(-90deg)"><use href="#arrow"/></svg></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIRECTIONS ============ -->
+<section class="directions">
+  <div class="cloud" id="cloud">
+    <div class="title"><h2 class="h-xl rv">Перспективные направления<br><em>взаимодействия</em></h2></div>
+    <div class="chip" style="left:6%;top:4%"><span class="sw"><span class="paint p-ink"></span></span>Финансы и инвестиции</div>
+    <div class="chip" style="left:58%;top:0%"><span class="sw"><span class="paint p-amber"></span></span>Промышленность</div>
+    <div class="chip" style="left:76%;top:20%"><span class="sw"><span class="paint p-rose"></span></span>Технологии и инновации</div>
+    <div class="chip" style="left:0%;top:38%"><span class="sw"><span class="paint p-sage"></span></span>Транспорт и логистика</div>
+    <div class="chip" style="left:80%;top:56%"><span class="sw"><span class="paint p-saffron"></span></span>Энергетика</div>
+    <div class="chip" style="left:8%;top:74%"><span class="sw"><span class="paint p-amber"></span></span>Агропромышленный комплекс</div>
+    <div class="chip" style="left:40%;top:88%"><span class="sw"><span class="paint p-sage"></span></span>Здравоохранение</div>
+    <div class="chip" style="left:66%;top:80%"><span class="sw"><span class="paint p-ink"></span></span>Образование и кадры</div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="quote">
+  <div class="wrap">
+    <figure class="qcard rv">
+      <div class="portrait"><div class="paint p-ink"></div><div class="initials">ГГ</div>
+        <img src="img/gref.jpg" alt="Герман Греф" onerror="this.remove()"></div>
+      <div class="body">
+        <blockquote>«Задача Совета — объединять бизнес России и Индии, поддерживать диалог и создавать условия для совместных проектов»</blockquote>
+        <figcaption class="who">Герман Греф <span class="tag">Председатель Совета</span>
+          <span class="role">Президент, Председатель Правления Сбербанка</span></figcaption>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ EVENTS MAP ============ -->
+<section class="events">
+  <div class="wrap">
+    <h2 class="h-xl rv">Ближайшие мероприятия<br><em>в Индии</em></h2>
+  </div>
+  <div class="mapbox rv">
+    <svg class="map" id="map" viewBox="0 0 600 640" role="img" aria-label="Точечная карта Индии с городами мероприятий"></svg>
+    <div class="evt" style="left:-4%;top:40%">
+      <div class="h"><span class="live"></span><span class="mono">10—12 янв 2027</span></div>
+      <div class="name">Vibrant Gujarat Global Summit</div>
+      <div class="where">Индия, Гуджарат</div>
+    </div>
+    <div class="evt" style="right:-4%;top:46%">
+      <div class="h"><span class="live"></span><span class="mono">28—31 янв 2027</span></div>
+      <div class="name">India Energy Week</div>
+      <div class="where">Индия, Калькутта</div>
+    </div>
+    <div class="evt" style="left:12%;top:8%">
+      <div class="h"><span class="live"></span><span class="mono">4—9 фев 2027</span></div>
+      <div class="name">Bharat Mobility</div>
+      <div class="where">Индия, Дели</div>
+    </div>
+    <div class="counter"><b>20</b>мероприятий запланировано в 2027 году</div>
+  </div>
+</section>
+
+<!-- ============ NEWS ============ -->
+<section class="news">
+  <div class="wrap">
+    <div class="news-head rv">
+      <h2 class="h-xl">Новости</h2>
+      <a class="pill" href="#" style="background:#fff">Все новости</a>
+    </div>
+    <ul class="rv">
+      <li><a href="#"><span class="mono date">27 октября</span><span class="t">Россия и Индия обсуждают снятие нетарифных ограничений на поставки агропродукции</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+      <li><a href="#"><span class="mono date">24 октября</span><span class="t">Россия предложила Индии почти в пять раз увеличить число прямых рейсов</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+      <li><a href="#"><span class="mono date">24 октября</span><span class="t">Россия и Индия рассматривают строительство совместных портов</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+      <li><a href="#"><span class="mono date">8 октября</span><span class="t">Россия и Индия ведут переговоры о соглашении о защите инвестиций</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+      <li><a href="#"><span class="mono date">23 сентября</span><span class="t">Индийские компании рассматривают запуск фарм- и медпроизводства в Москве</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+      <li><a href="#"><span class="mono date">11 сентября</span><span class="t">Герман Греф возглавил Российско-Индийский деловой совет</span><svg class="arr" width="16" height="16"><use href="#arrow"/></svg></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ RUPEE PROMO ============ -->
+<section class="promo">
+  <div class="wrap">
+    <div class="stage rv">
+      <div class="paint p-saffron"></div>
+      <div class="fx" aria-hidden="true">
+        <div style="display:flex;align-items:center;gap:8px"><svg class="mark"><use href="#mark"/></svg>Перевод контрагенту</div>
+        <div class="row"><span>Валюта</span><span class="mono">INR ₹</span></div>
+        <div class="row"><span>Без конвертации</span><span class="ok"><svg width="9" height="9" style="background:#3c7a4b;border-radius:50%"><use href="#check"/></svg>USD/EUR</span></div>
+        <div class="row"><span>Зачисление</span><span class="mono">от 10 мин</span></div>
+      </div>
+      <div class="content">
+        <h2>Хотите работать с Индией? <em>Откройте счёт в рупиях</em></h2>
+        <div>
+          <p>Платите и получайте переводы в валюте контрагента, без конвертации через доллар или евро. Переводы — от 10 минут.</p>
+          <a class="btn light" href="#" style="margin-top:20px">Узнать больше <svg width="14" height="14"><use href="#arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPLY ============ -->
+<section class="apply" id="apply">
+  <div class="wrap">
+    <div class="intro rv">
+      <h2 class="h-xl">Станьте частью<br><em>делового совета</em></h2>
+      <p class="sub">Находите партнёров, участвуйте в совместных проектах и развивайте сотрудничество между бизнесом России и Индии</p>
+    </div>
+    <form id="applyForm" class="rv" novalidate>
+      <div class="two">
+        <div class="field" data-req><label for="f-name">Имя и фамилия*</label><input id="f-name" autocomplete="name" placeholder="Анна Иванова"><div class="msg">Введите имя и фамилию</div></div>
+        <div class="field" data-req><label for="f-co">Компания*</label><input id="f-co" autocomplete="organization" placeholder="Название компании"><div class="msg">Введите название компании</div></div>
+      </div>
+      <div class="two">
+        <div class="field" data-req data-email><label for="f-email">Email*</label><input id="f-email" type="email" autocomplete="email" placeholder="name@company.ru"><div class="msg">Введите корректный email</div></div>
+        <div class="field"><label for="f-tel">Телефон</label><input id="f-tel" type="tel" autocomplete="tel" placeholder="+7"></div>
+      </div>
+      <div class="field"><label for="f-msg">Комментарий</label><textarea id="f-msg" placeholder="Какие направления вам интересны?"></textarea></div>
+      <p class="consent">Нажимая кнопку, я даю согласие на взаимодействие и <a href="#">обработку персональных данных</a></p>
+      <button class="btn" type="submit">Отправить заявку <svg width="14" height="14"><use href="#arrow"/></svg></button>
+    </form>
+    <div class="done" id="done">
+      <h3 class="h-md">Спасибо, <em>заявка отправлена</em></h3>
+      <p class="sub" style="margin:10px auto 0">Мы свяжемся с вами по указанному email</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot">
+    <div>
+      <h2 class="h-xl" style="font-size:clamp(30px,3.4vw,40px)">Российско-Индийский<br><em>деловой совет</em></h2>
+      <a class="btn" href="#apply" style="margin-top:22px">Стать участником</a>
+    </div>
+    <div class="cols">
+      <div><h5>Совет</h5><a href="#about">О Совете</a><a href="#india">Бизнес с Индией</a><a href="#apply">Оставить заявку</a></div>
+      <div><h5>Документы</h5><a href="#">Обработка персональных данных</a></div>
+    </div>
+    <div class="legal mono">
+      <svg class="mark" style="width:28px;height:28px;margin-bottom:10px"><use href="#mark"/></svg><br>
+      © 2026 Деловой совет по сотрудничеству с Индией
+    </div>
+  </div>
+  <div class="giant" aria-hidden="true">RIBC</div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // hero ticker
+  const ticks = [...document.querySelectorAll('.ticker span')];
+  let ti = 0;
+  if (!reduce) setInterval(() => { ticks[ti].classList.remove('on'); ti = (ti + 1) % ticks.length; ticks[ti].classList.add('on'); }, 2800);
+
+  // feature 1: work line
+  const work = [
+    ['Знакомим компании двух стран', 'Деловые связи'],
+    ['Собираем экспертную встречу', 'Отраслевой диалог'],
+    ['Готовим обзор рынка', 'Аналитика'],
+    ['Прорабатываем совместную инициативу', 'Проектная работа'],
+  ];
+  const wl = document.getElementById('workLine'), wm = document.getElementById('workMeta');
+  let wi = 0;
+  if (!reduce) setInterval(() => { wi = (wi + 1) % work.length; [wl.textContent, wm.textContent] = work[wi]; }, 2600);
+
+  // feature 3: typing questions
+  const qs = ['Какие отрасли Индии открыты для инвестиций?', 'Как платить контрагенту в рупиях?', 'Какие выставки пройдут в 2027 году?', 'Как найти дистрибьютора в Мумбаи?'];
+  const q = document.getElementById('askQ');
+  if (reduce) q.textContent = qs[0];
+  else (async function loop() {
+    for (let k = 0; ; k = (k + 1) % qs.length) {
+      const s = qs[k];
+      for (let i = 1; i <= s.length; i++) { q.textContent = s.slice(0, i); await new Promise(r => setTimeout(r, 38)); }
+      await new Promise(r => setTimeout(r, 1800));
+      for (let i = s.length; i >= 0; i--) { q.textContent = s.slice(0, i); await new Promise(r => setTimeout(r, 14)); }
+      await new Promise(r => setTimeout(r, 300));
+    }
+  })();
+
+  // India dot map (упрощённый контур, lon/lat)
+  const poly = [[68.4,23.6],[69,22.4],[70,21],[71,20.7],[72.6,21.2],[72.8,19],[73.4,16.5],[74,15],[74.8,12.9],[76,10.2],[77.5,8.1],[78.2,8.9],[79.3,10.3],[79.9,12],[80.3,13.1],[80.2,15.5],[82.3,16.6],[83.4,17.7],[85.1,19.4],[86.6,20.3],[87.5,21.6],[88.6,21.6],[89,22.5],[88.7,24.2],[88.1,24.8],[88.4,26.3],[89.8,26.4],[92,26.9],[92.5,25],[92.3,23.7],[93,22],[93.4,23.9],[94.2,24],[95.2,26.6],[96.9,27.5],[95.4,28.3],[94,28.7],[92,27.8],[88.8,27.3],[88.1,27.9],[88,26.5],[84,27.4],[81,28.6],[80,30.4],[79,31.4],[78.7,32.6],[79.5,33.4],[78.8,34.6],[77.8,35.5],[76,35.9],[74.5,35],[73.8,34.4],[74.6,32.4],[75.3,32.2],[74.6,31],[74,30],[73.4,29.5],[72.4,28],[70.8,27.7],[69.6,27],[70.2,25.8],[71,24.4],[69.4,24.3]];
+  const inside = (x, y) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+  const cities = [
+    { p: [77.2, 28.6], w: 1.6, ev: true },   // Дели
+    { p: [72.6, 23.1], w: 1.3, ev: true },   // Ахмадабад / Гуджарат
+    { p: [88.4, 22.6], w: 1.4, ev: true },   // Калькутта
+    { p: [72.9, 19.1], w: 1.6 },             // Мумбаи
+    { p: [77.6, 13.0], w: 1.3 },             // Бенгалуру
+    { p: [80.3, 13.1], w: 1.1 },             // Ченнаи
+    { p: [78.5, 17.4], w: 1.1 },             // Хайдарабад
+    { p: [73.9, 18.5], w: .8 },              // Пуна
+    { p: [75.8, 26.9], w: .7 },              // Джайпур
+    { p: [80.9, 26.8], w: .7 },              // Лакхнау
+  ];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const step = .48, x0 = 67.5, x1 = 97.5, y0 = 7.5, y1 = 36.5, W = 600, H = 640;
+  const sx = W / (x1 - x0), sy = H / (y1 - y0);
+  let out = '';
+  for (let lat = y1; lat >= y0; lat -= step) for (let lon = x0; lon <= x1; lon += step) {
+    if (!inside(lon, lat)) continue;
+    let heat = 0, ev = false;
+    for (const c of cities) { const d = Math.hypot(lon - c.p[0], lat - c.p[1]); const h = c.w * Math.exp(-(d * d) / 1.1); if (h > heat) { heat = h; ev = !!c.ev; } }
+    if (heat < .18 && rnd() < .03) { heat = .3 + rnd() * .35; ev = false; }
+    const cx = (lon - x0) * sx, cy = (y1 - lat) * sy;
+    let r = 2.1, fill = '#d9d5cc';
+    if (heat > .18) { r = 2.2 + heat * 2.6; fill = ev && heat > .5 ? '#F07A2B' : '#1a130e'; }
+    out += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(2)}" fill="${fill}"/>`;
+  }
+  document.getElementById('map').innerHTML = out;
+
+  // hero email → форма
+  document.getElementById('heroForm').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('f-email').value = document.getElementById('heroEmail').value;
+    document.getElementById('apply').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => document.getElementById('f-name').focus({ preventScroll: true }), 600);
+  });
+
+  // форма: клиентская валидация, без отправки на сервер
+  const form = document.getElementById('applyForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let ok = true;
+    form.querySelectorAll('.field[data-req]').forEach(f => {
+      const v = f.querySelector('input').value.trim();
+      const bad = !v || (f.hasAttribute('data-email') && !/^\S+@\S+\.\S+$/.test(v));
+      f.classList.toggle('err', bad); if (bad) ok = false;
+    });
+    if (!ok) return form.querySelector('.field.err input').focus();
+    form.style.display = 'none';
+    document.getElementById('done').classList.add('show');
+  });
+  form.addEventListener('input', e => e.target.closest('.field')?.classList.remove('err'));
+})();
+</script>
+</body>
+</html>
