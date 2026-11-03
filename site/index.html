@@ -120,19 +120,27 @@
   .ask .go { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; flex: none; }
 
   /* ---------- Directions (разлёт карточек) ---------- */
-  .directions { padding: clamp(100px, 14vw, 180px) 0; text-align: center; overflow: hidden; }
-  .cloud { position: relative; max-width: 1120px; margin: 0 auto; min-height: 640px; }
-  .cloud .title { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
-  .chip { position: absolute; display: flex; align-items: center; gap: 10px; background: #fff; padding: 10px 14px 10px 10px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.03); font-size: 14px; white-space: nowrap; animation: bob 7s ease-in-out infinite alternate; }
+  /* Как #infographic у Lassie: секция прилипает к экрану, карточки разлетаются из центра,
+     пока она въезжает, затем медленно расползаются, а заголовок сменяется вторым. Позиции — в JS. */
+  .directions { height: 260svh; position: relative; }
+  .dir-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .dt { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 0 16px; z-index: 1; pointer-events: none; will-change: transform, opacity; }
+  .dt .big { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(72px, 9vw, 120px); line-height: 1; letter-spacing: -.03em; margin-bottom: 8px; }
+  .dt2 { opacity: 0; }
+  .fly { position: absolute; left: 50%; top: 50%; z-index: 2; will-change: transform; }
+  .fly > * { translate: -50% -50%; }
+  .fly.under { z-index: 0; }
+  .chip { display: flex; align-items: center; gap: 10px; background: #fff; padding: 10px 14px 10px 10px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.03); font-size: 14px; white-space: nowrap; }
   .chip .sw { width: 34px; height: 34px; border-radius: 9px; position: relative; overflow: hidden; flex: none; }
-  .chip:nth-child(2n) { animation-duration: 9s; animation-delay: -3s; }
-  .chip:nth-child(3n) { animation-duration: 8s; animation-delay: -5s; }
-  @keyframes bob { from { transform: translateY(-6px); } to { transform: translateY(8px); } }
-  @media (max-width: 760px) {
-    .cloud { min-height: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 16px; }
-    .cloud .title { position: static; width: 100%; margin-bottom: 28px; }
-    .chip { position: static; animation: none; }
+  .tile { position: relative; display: block; width: clamp(110px, 17vw, 240px); aspect-ratio: .9; border-radius: clamp(16px, 2vw, 24px); overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+  .tile.wide { aspect-ratio: 1.25; }
+  @media (max-width: 640px) {
+    .chip { font-size: 12.5px; padding: 7px 11px 7px 7px; gap: 8px; border-radius: 12px; }
+    .chip .sw { width: 26px; height: 26px; border-radius: 7px; }
+    .tile { width: 96px; border-radius: 14px; }
+    .fly.no-sm { display: none; }
   }
+  @media (prefers-reduced-motion: reduce) { .directions { height: 100svh; } }
 
   /* ---------- Quote ---------- */
   .quote { padding: 40px 0 clamp(100px, 14vw, 180px); }
@@ -352,17 +360,26 @@
 </section>
 
 <!-- ============ DIRECTIONS ============ -->
-<section class="directions">
-  <div class="cloud" id="cloud">
-    <div class="title"><h2 class="h-xl rv">Перспективные направления<br><em>взаимодействия</em></h2></div>
-    <div class="chip" style="left:6%;top:4%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/rupee-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Финансы и инвестиции</div>
-    <div class="chip" style="left:58%;top:0%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/industry-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Промышленность</div>
-    <div class="chip" style="left:76%;top:20%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/technology-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Технологии и инновации</div>
-    <div class="chip" style="left:0%;top:38%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/logistics-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Транспорт и логистика</div>
-    <div class="chip" style="left:80%;top:56%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/energy-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Энергетика</div>
-    <div class="chip" style="left:8%;top:74%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/agriculture-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Агропромышленный комплекс</div>
-    <div class="chip" style="left:40%;top:88%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/healthcare-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Здравоохранение</div>
-    <div class="chip" style="left:66%;top:80%"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/education-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Образование и кадры</div>
+<!-- data-d / data-m — точка, куда карточка долетает: доли половины ширины и высоты сцены
+     (десктоп / телефон). Пустой data-m — карточки нет на телефоне. -->
+<section class="directions" id="dirs">
+  <div class="dir-stage">
+    <div class="dt dt1"><h2 class="h-xl"><span class="big">8</span>перспективных направлений<br><em>взаимодействия</em></h2></div>
+    <div class="dt dt2"><h2 class="h-xl">От финансов до образования —<br><em>весь спектр сотрудничества</em></h2></div>
+
+    <div class="fly under" data-d="-.46,-.50" data-m="-.62,-.64"><span class="tile"><span class="paint" aria-hidden="true"><img src="img/cooperation-mobile.webp" width="768" height="512" loading="lazy" decoding="async" alt=""></span></span></div>
+    <div class="fly under no-sm" data-d=".52,-.58" data-m=""><span class="tile wide"><span class="paint" aria-hidden="true"><img src="img/logistics-mobile.webp" width="768" height="512" loading="lazy" decoding="async" alt=""></span></span></div>
+    <div class="fly under no-sm" data-d="-.80,.42" data-m=""><span class="tile wide"><span class="paint" aria-hidden="true"><img src="img/expertise-mobile.webp" width="768" height="512" loading="lazy" decoding="async" alt=""></span></span></div>
+    <div class="fly under" data-d=".44,.72" data-m=".62,.62"><span class="tile"><span class="paint" aria-hidden="true"><img src="img/rupee-mobile.webp" width="768" height="512" loading="lazy" decoding="async" alt=""></span></span></div>
+
+    <div class="fly" data-d="-.66,-.72" data-m="-.22,-.88"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/rupee-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Финансы и инвестиции</div></div>
+    <div class="fly" data-d=".22,-.80" data-m=".30,-.72"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/industry-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Промышленность</div></div>
+    <div class="fly" data-d=".74,-.36" data-m="-.14,-.56"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/technology-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Технологии и инновации</div></div>
+    <div class="fly" data-d="-.86,-.30" data-m=".24,-.40"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/logistics-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Транспорт и логистика</div></div>
+    <div class="fly" data-d=".82,.16" data-m="-.26,.40"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/energy-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Энергетика</div></div>
+    <div class="fly" data-d="-.50,.66" data-m=".12,.56"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/agriculture-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Агропромышленный комплекс</div></div>
+    <div class="fly" data-d=".06,.80" data-m="-.30,.72"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/healthcare-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Здравоохранение</div></div>
+    <div class="fly" data-d=".66,.70" data-m=".24,.88"><div class="chip"><span class="sw"><span class="paint" aria-hidden="true"><img src="img/education-thumb.webp" width="96" height="96" loading="lazy" decoding="async" alt=""></span></span>Образование и кадры</div></div>
   </div>
 </section>
 
@@ -502,6 +519,42 @@
   // reveal on scroll
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
   document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // направления: разлёт из центра при въезде секции, затем дрейф и смена заголовка, пока она прилипла
+  const dirs = document.getElementById('dirs');
+  const flies = [...dirs.querySelectorAll(".fly")].map(el => ({ el, w: 0, d: el.dataset.d.split(',').map(Number), m: el.dataset.m ? el.dataset.m.split(',').map(Number) : null }));
+  const dt1 = dirs.querySelector('.dt1'), dt2 = dirs.querySelector('.dt2');
+  const clamp01 = v => Math.min(1, Math.max(0, v));
+  const span = (v, a, b) => clamp01((v - a) / (b - a));
+  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  let small = false;
+  const measure = () => { small = innerWidth <= 640; flies.forEach(f => { f.w = f.el.firstElementChild.offsetWidth; }); };
+  const renderDirs = () => {
+    const vh = innerHeight, r = dirs.getBoundingClientRect();
+    const enter = reduce ? 1 : easeOut(span(vh - r.top, 0, vh));
+    const pin = reduce ? 0 : span(-r.top, 0, r.height - vh);
+    const W = Math.min(innerWidth, 1240), halfW = W / 2 - 16, halfH = vh / 2 - (small ? 84 : 64);
+    for (const f of flies) {
+      const p = small ? f.m : f.d;
+      if (!p) continue;
+      const spread = enter * (1 + .1 * pin);
+      const s = .38 + .62 * enter;
+      const lim = innerWidth / 2 - f.w * s / 2 - 8;
+      const x = Math.max(-lim, Math.min(lim, p[0] * halfW * spread));
+      f.el.style.transform = `translate(${x.toFixed(1)}px, ${(p[1] * halfH * spread).toFixed(1)}px) scale(${s.toFixed(3)})`;
+    }
+    const in1 = reduce ? 1 : span(enter, .55, 1), out1 = span(pin, .25, .47), in2 = span(pin, .41, .63);
+    dt1.style.opacity = in1 * (1 - out1);
+    dt1.style.transform = `translateY(${(1 - in1) * 30 - out1 * 60}px)`;
+    dt2.style.opacity = in2;
+    dt2.style.transform = `translateY(${(1 - in2) * 40}px)`;
+  };
+  let raf = 0;
+  const queue = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; renderDirs(); }); };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', () => { measure(); queue(); });
+  measure(); renderDirs();
+  document.fonts?.ready.then(() => { measure(); renderDirs(); });
 
   // hero ticker
   const ticks = [...document.querySelectorAll('.ticker span')];
