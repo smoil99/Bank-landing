@@ -131,7 +131,7 @@
   /* строки заданы переносами в разметке; не даём им дробиться дальше, пока колонка позволяет */
   .pillars h4, .pillars p { white-space: nowrap; }
   .pillars p { color: var(--ink-2); font-size: 13.5px; }
-  @media (max-width: 760px) { .statement .pillars { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) { .statement .pillars { grid-template-columns: 1fr; } .pillars .ill { max-width: 260px; } }
 
   .feature { padding: 40px 0 72px; }
   .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
