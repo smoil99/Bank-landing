@@ -260,7 +260,8 @@
   @media (prefers-reduced-motion: reduce) { .directions { height: 100svh; } }
 
   /* ---------- Quote ---------- */
-  .quote { padding: 40px 0 clamp(100px, 14vw, 180px); }
+  /* сверху на 12px меньше, чем снизу: столько остаётся от нижних карточек блока направлений до конца его экрана */
+  .quote { padding: clamp(88px, calc(14vw - 12px), 168px) 0 clamp(100px, 14vw, 180px); }
   .qcard { display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; background: #fff; border-radius: 28px; padding: 16px; max-width: 900px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,.06); }
   .qcard .portrait { position: relative; border-radius: 18px; overflow: hidden; min-height: 360px; }
   .qcard .portrait .initials { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.92); font-family: var(--serif); font-size: 96px; font-weight: 300; font-style: italic; z-index: 2; }
