@@ -49,6 +49,11 @@
   .pill.more { display: none; border: 0; cursor: pointer; font: inherit; font-size: 14px; color: inherit; }
   .pill.more svg { transition: transform .25s; }
   .pill.more[aria-expanded="true"] svg { transform: rotate(180deg); }
+  /* ступени уплотнения (ставит скрипт): .tight — мельче кнопки; .tighter — знак без подписи и «Заявка» */
+  .nav.tight .pill { padding: 0 9px; font-size: 13px; }
+  .nav.tight .pill.brand { padding-left: 7px; }
+  .nav.tighter .brand .hide-sm, .nav.tighter .cta .hide-sm { display: none; }
+  .nav.tighter .cta .show-sm { display: inline; }
   .nav.compact .navlinks { display: none; }
   .nav.compact .pill.more { display: inline-flex; gap: 6px; }
   .navmenu { position: absolute; left: 0; top: calc(100% + 6px); min-width: 230px; display: grid; gap: 2px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.82); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 16px 40px rgba(0,0,0,.14); }
@@ -265,7 +270,7 @@
   @media (max-width: 760px) { .qcard { grid-template-columns: 1fr; } .qcard .portrait { min-height: 0; aspect-ratio: 1; } .qcard .body { padding: 8px 8px 8px; } }
 
   /* ---------- Events map ---------- */
-  .events { padding: 0 0 clamp(80px, 12vw, 160px); text-align: center; }
+  .events { padding: 0 0 clamp(80px, 12vw, 160px); text-align: center; overflow-x: clip; }
   .mapbox { position: relative; max-width: 780px; margin: 40px auto 0; }
   .mapbox svg.map { width: 100%; height: auto; display: block; }
   .evt { position: absolute; width: 230px; text-align: left; background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.03); font-size: 13px; }
@@ -745,13 +750,21 @@
   const moreBtn = nav.querySelector('.pill.more'), navMenu = document.getElementById('navMenu');
   navMenu.innerHTML = navLinks.innerHTML;
   const setMenu = open => { navMenu.hidden = !open; moreBtn.setAttribute('aria-expanded', open); };
-  const fitNav = () => {
-    nav.classList.remove('compact');
+  const fits = () => {
     const groups = [...nav.querySelectorAll(':scope > .pillgroup')];
-    const need = groups.reduce((w, g) => w + g.scrollWidth, 0) + 6 * (groups.length - 1);
-    const compact = need > nav.clientWidth;
-    nav.classList.toggle('compact', compact);
-    if (!compact) setMenu(false);
+    return groups.reduce((w, g) => w + g.scrollWidth, 0) + 6 * (groups.length - 1) <= nav.clientWidth;
+  };
+  // пробуем по очереди: как есть → мельче → без подписей → «Разделы»; на телефоне сразу «Разделы»
+  const LEVELS = [[], ['tight'], ['tight', 'tighter'], ['tight', 'compact']];
+  const fitNav = () => {
+    const all = ['tight', 'tighter', 'compact'];
+    let level = innerWidth <= 640 ? 3 : 0;
+    for (; level < LEVELS.length; level++) {
+      nav.classList.remove(...all);
+      nav.classList.add(...LEVELS[level]);
+      if (level === 3 || fits()) break;
+    }
+    if (level !== 3) setMenu(false);
   };
   moreBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(navMenu.hidden); });
   navMenu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
