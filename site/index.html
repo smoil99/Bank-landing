@@ -59,11 +59,11 @@
   .navmenu { position: absolute; left: 0; top: calc(100% + 6px); min-width: 230px; display: grid; gap: 2px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.82); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 16px 40px rgba(0,0,0,.14); }
   .navmenu[hidden] { display: none; }
   .navmenu .pill { justify-content: flex-start; }
-  .pill.is-current { background: var(--ink); color: #fff; }
+  .pill.is-current { background: rgba(255,255,255,.9); box-shadow: 0 1px 3px rgba(18,12,8,.1); }
   section, header { scroll-margin-top: 60px; }
   /* в шапке кнопки без собственной подложки — только стеклянная группа; белая — при наведении */
   .nav .pill:not(.cta):not(.is-current) { background: transparent; }
-  .nav .pill:not(.cta):not(.is-current):hover { background: rgba(255,255,255,.7); }
+  .nav .pill:not(.cta):not(.is-current):hover { background: rgba(255,255,255,.6); }
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
   .mark { display: block; width: 20px; height: 20px; flex: none; }
@@ -361,15 +361,28 @@
   .done.show { display: block; }
 
   /* ---------- Footer ---------- */
-  footer { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--bg) 0 55%, #d7e8f0 100%); }
-  .foot { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; padding-top: 56px; padding-bottom: 40px; position: relative; z-index: 2; }
-  .foot .cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; font-size: 14px; }
-  .foot .cols h5 { font-weight: 400; color: var(--ink-3); font-size: 13px; margin-bottom: 8px; }
-  .foot .cols a { display: block; padding: 2px 0; }
-  .foot .cols a:hover { color: var(--accent); }
-  .legal { grid-column: 2; margin-top: 60px; color: #444; line-height: 1.6; }
+  /* как у incident.io: тёплое шафрановое свечение, финальный призыв по центру,
+     ниже — знак с копирайтом и колонки ссылок с тонкой вертикальной линией слева */
+  footer { position: relative; overflow: hidden; color: #fff; background:
+      radial-gradient(55% 45% at 72% 52%, rgba(255,196,120,.85), transparent 70%),
+      radial-gradient(45% 55% at 18% 72%, rgba(234,96,36,.85), transparent 70%),
+      linear-gradient(180deg, var(--bg) 0, #f4c29c 5%, #ef9152 17%, #ec7436 48%, #e9662a 100%); }
+  .foot-cta { text-align: center; padding: clamp(120px, 16vw, 200px) 0 clamp(80px, 10vw, 140px); position: relative; z-index: 2; }
+  .foot-cta h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(38px, 5.6vw, 76px); line-height: 1.05; letter-spacing: -.015em; text-wrap: balance; }
+  .foot-cta p { margin: 18px auto 0; max-width: 42ch; font-size: 16px; color: rgba(255,255,255,.88); }
+  .foot-cta .acts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .btn.ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.6); }
+  .btn.ghost:hover { background: rgba(255,255,255,.12); }
+  .foot { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 32px 24px; padding-bottom: clamp(40px, 6vw, 72px); position: relative; z-index: 2; font-size: 14px; }
+  .foot-brand { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+  .foot-brand .mark { width: 30px; height: 30px; }
+  .foot-brand small { font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,.8); }
+  .foot-col { border-left: 1px solid rgba(255,255,255,.4); padding-left: 16px; display: flex; flex-direction: column; gap: 9px; }
+  .foot-col h5 { font-family: var(--serif); font-weight: 400; font-size: 16px; margin-bottom: 4px; }
+  .foot-col a { color: rgba(255,255,255,.92); width: fit-content; }
+  .foot-col a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   .giant { font-family: var(--serif); font-weight: 300; font-size: clamp(30px, 8.8vw, 140px); line-height: .92; letter-spacing: -.035em; color: #fff; text-align: center; padding: 0 8px .06em; user-select: none; white-space: nowrap; }
-  @media (max-width: 760px) { .foot { grid-template-columns: 1fr; } .legal { grid-column: 1; margin-top: 20px; } }
+  @media (max-width: 760px) { .foot { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; } }
 
   /* ---------- Reveal ---------- */
   .rv { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
@@ -686,19 +699,22 @@
 
 <!-- ============ FOOTER ============ -->
 <footer>
+  <div class="wrap foot-cta">
+    <h2>Россия и Индия.<br><em>Работаем вместе.</em></h2>
+    <p>Площадка реализации бизнес-интересов клиентов обеих стран</p>
+    <div class="acts">
+      <a class="btn light" href="#apply">Стать участником</a>
+      <a class="btn ghost" href="#events">Ближайшие мероприятия</a>
+    </div>
+  </div>
   <div class="wrap foot">
-    <div>
-      <h2 class="h-xl" style="font-size:clamp(30px,3.4vw,40px)">Российско-Индийский<br><em>деловой совет</em></h2>
-      <a class="btn" href="#apply" style="margin-top:22px">Стать участником</a>
+    <div class="foot-brand">
+      <svg class="mark" aria-hidden="true"><use href="#mark"/></svg>
+      <small>© 2026 Деловой совет<br>по сотрудничеству с Индией</small>
     </div>
-    <div class="cols">
-      <div><h5>Совет</h5><a href="#about">О Совете</a><a href="#india">Бизнес с Индией</a><a href="#apply">Оставить заявку</a></div>
-      <div><h5>Документы</h5><a href="#">Обработка персональных данных</a></div>
-    </div>
-    <div class="legal mono">
-      <svg class="mark" style="width:28px;height:28px;margin-bottom:10px"><use href="#mark"/></svg><br>
-      © 2026 Деловой совет по сотрудничеству с Индией
-    </div>
+    <nav class="foot-col" aria-label="Совет"><h5>Совет</h5><a href="#about">О Совете</a><a href="#leaders">Руководство</a><a href="#dirs">Направления</a></nav>
+    <nav class="foot-col" aria-label="Деятельность"><h5>Деятельность</h5><a href="#links">Деловые связи</a><a href="#projects">Проекты</a><a href="#expertise">Экспертиза</a><a href="#events">Мероприятия</a></nav>
+    <nav class="foot-col" aria-label="Участникам"><h5>Участникам</h5><a href="#india">Бизнес с Индией</a><a href="#news">Новости</a><a href="#apply">Оставить заявку</a><a href="#">Обработка персональных данных</a></nav>
   </div>
   <div class="giant" aria-hidden="true">Российско-Индийский<br><em>деловой совет</em></div>
 </footer>
