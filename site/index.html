@@ -87,6 +87,8 @@
   /* ---------- Hero ---------- */
   .hero { position: relative; min-height: 100svh; display: grid; place-items: center; color: #fff; text-align: center; overflow: hidden; }
   .hero-inner { position: relative; z-index: 2; padding: 120px var(--gutter) 140px; }
+  /* параллакс (значения ставит скрипт): фото отстаёт от прокрутки, текст уходит вверх быстрее и гаснет */
+  .hero .paint, .hero-inner, .hero .signup { will-change: transform; }
   .hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 7.4vw, 92px); line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
   .hero h1 em { font-weight: 300; }
   .hero .lede { margin-top: 28px; font-size: 16px; opacity: .92; }
@@ -794,6 +796,24 @@
   }), { rootMargin: '-45% 0px -50% 0px' });
   [...new Set(spyLinks.map(a => a.getAttribute('href')))].forEach(h => { const el = document.querySelector(h); if (el) spy.observe(el); });
   new IntersectionObserver(([e]) => { if (e.isIntersecting) spyLinks.forEach(a => a.classList.remove('is-current')); }, { rootMargin: '-45% 0px -50% 0px' }).observe(document.getElementById('top'));
+
+  // параллакс первого экрана: только пока он виден; фото — 40% скорости прокрутки, текст — +25% и гаснет
+  const hero = document.getElementById('top');
+  const heroPaint = hero.querySelector('.paint'), heroInner = hero.querySelector('.hero-inner'), heroForm = hero.querySelector('.signup');
+  let heroRaf = 0;
+  const heroParallax = () => {
+    heroRaf = 0;
+    const y = Math.min(scrollY, hero.offsetHeight), k = y / hero.offsetHeight;
+    heroPaint.style.transform = `translate3d(0, ${(y * .4).toFixed(1)}px, 0)`;
+    heroInner.style.transform = `translate3d(0, ${(-y * .25).toFixed(1)}px, 0)`;
+    // на самом верху не трогаем прозрачность, чтобы не мешать анимации открытия
+    heroInner.style.opacity = y ? Math.max(0, 1 - k * 1.6).toFixed(3) : '';
+    heroForm.style.opacity = y ? Math.max(0, 1 - k * 2.4).toFixed(3) : '';
+  };
+  if (!reduce) {
+    addEventListener('scroll', () => { if (!heroRaf && scrollY < hero.offsetHeight + 50) heroRaf = requestAnimationFrame(heroParallax); }, { passive: true });
+    heroParallax();
+  }
 
   // hero ticker
   const ticks = [...document.querySelectorAll('.ticker span')];
