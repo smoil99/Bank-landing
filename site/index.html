@@ -287,9 +287,10 @@
   .ev-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px rgba(40,26,14,.22); }
   .ev-card:hover .bg img { filter: blur(8px) saturate(1.2); }
   .ev-card .q { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.3vw, 32px); line-height: 1.15; letter-spacing: -.01em; }
-  .ev-card .go { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.75); }
+  .ev-card .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .ev-card .go { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); transition: background .25s, box-shadow .25s; }
   .ev-card .go svg { transition: transform .25s; }
-  .ev-card:hover .go { color: #fff; }
+  .ev-card:hover .go { background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,.8); }
   .ev-card:hover .go svg { transform: translate(2px, -2px); }
   .ev-card .who { font-size: 15px; line-height: 1.45; }
   .ev-card .who span { display: block; color: rgba(255,255,255,.62); }
@@ -598,18 +599,18 @@
     <div class="ev-grid rv">
       <a class="ev-card" data-ev="0" href="https://www.vibrantgujarat.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/hero-mobile.webp" alt="" loading="lazy" decoding="async"></span>
-        <div><div class="q">Vibrant Gujarat Global Summit</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="who">10—12 января 2027<span>Индия, Гуджарат</span></div>
+        <div class="q">Vibrant Gujarat Global Summit</div>
+        <div class="foot-row"><div class="who">10—12 января 2027<span>Индия, Гуджарат</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
       <a class="ev-card" data-ev="1" href="https://www.indiaenergyweek.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/rupee-mobile.webp" alt="" loading="lazy" decoding="async"></span>
-        <div><div class="q">India Energy Week</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="who">28—31 января 2027<span>Индия, Калькутта</span></div>
+        <div class="q">India Energy Week</div>
+        <div class="foot-row"><div class="who">28—31 января 2027<span>Индия, Калькутта</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
       <a class="ev-card" data-ev="2" href="https://www.bharat-mobility.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/logistics-mobile.webp" alt="" loading="lazy" decoding="async"></span>
-        <div><div class="q">Bharat Mobility</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="who">4—9 февраля 2027<span>Индия, Дели</span></div>
+        <div class="q">Bharat Mobility</div>
+        <div class="foot-row"><div class="who">4—9 февраля 2027<span>Индия, Дели</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
     </div>
   </div>
