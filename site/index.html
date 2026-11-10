@@ -871,7 +871,8 @@
       [...heroRot.querySelectorAll('.w > span')].forEach((el, i) => el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }],
         { duration: 700, delay: i * 80, easing: EASE, fill: 'backwards' }));
     };
-    setTimeout(() => setInterval(swap, 3200), 2600);
+    // первая смена — через 2,9 с после загрузки, дальше каждые 3,2 с
+    setTimeout(() => { swap(); setInterval(swap, 3200); }, 2900);
   }
 
   // hero ticker
