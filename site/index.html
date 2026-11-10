@@ -272,26 +272,43 @@
   .qcard .role { color: var(--ink-2); font-size: 13px; width: 100%; }
   @media (max-width: 760px) { .qcard { grid-template-columns: 1fr; } .qcard .portrait { min-height: 0; aspect-ratio: 1; } .qcard .body { padding: 8px 8px 8px; } }
 
-  /* ---------- Events map ---------- */
-  .events { padding: 0 0 clamp(80px, 12vw, 160px); text-align: center; overflow-x: clip; }
-  .mapbox { position: relative; max-width: 780px; margin: 40px auto 0; }
-  .mapbox svg.map { width: 100%; height: auto; display: block; }
-  .evt { position: absolute; width: 230px; text-align: left; background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.03); font-size: 13px; }
-  .evt .h { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .evt .h .tag { margin-left: auto; }
-  .evt .name { font-family: var(--serif); font-size: 17px; line-height: 1.2; }
-  .evt .where { color: var(--ink-2); margin-top: 4px; }
-  /* карточка — ссылка на сайт мероприятия */
-  a.evt { display: block; color: inherit; }
-  .evt .ext { margin-left: auto; color: var(--ink-3); transition: color .2s, transform .2s; }
-  a.evt:hover { opacity: 1 !important; transform: translateY(-4px); box-shadow: 0 20px 44px rgba(240,122,43,.18), 0 0 0 1.5px var(--accent); }
-  a.evt:hover .ext { color: var(--accent); transform: translate(2px, -2px); }
-  .live { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(240,122,43,.18); flex: none; }
-  .counter { position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 12px; background: var(--ink); color: #fff; border-radius: 12px; padding: 6px 14px 6px 6px; font-size: 13px; white-space: nowrap; }
-  .counter b { font-family: var(--serif); font-weight: 400; font-size: 20px; background: rgba(255,255,255,.12); border-radius: 8px; padding: 2px 10px; min-width: 2.2em; text-align: center; }
+  /* ---------- Events: заголовок + показатели + стрелки, лента карточек поверх карты (как HazeTrustSlider) ---------- */
+  .events { padding: 0 0 clamp(80px, 12vw, 160px); overflow-x: clip; }
+  .ev-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .ev-title { font-family: var(--serif); font-weight: 300; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.02; letter-spacing: -.02em; }
+  .ev-badges { display: flex; flex-wrap: wrap; align-items: center; margin-top: 18px; font-size: 15px; color: var(--ink-2); }
+  .ev-badges p { display: flex; align-items: baseline; gap: 10px; }
+  .ev-badges p + p { margin-left: 18px; padding-left: 18px; border-left: 1px solid rgba(18,12,8,.18); }
+  .ev-badges b { font-weight: 500; color: var(--ink); }
+  .ev-ctrls { display: flex; gap: 8px; flex: none; }
+  .ev-ctrls button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; box-shadow: 0 0 0 1px rgba(18,12,8,.12); display: grid; place-items: center; cursor: pointer; color: var(--ink); transition: background .2s, opacity .2s; }
+  .ev-ctrls button:hover:not(:disabled) { background: #f3f1ec; }
+  .ev-ctrls button:disabled { opacity: .35; cursor: default; }
+  .ev-ctrls .next svg { transform: rotate(180deg); }
+  .ev-stage { position: relative; display: flow-root; margin-top: 28px; --mapw: min(620px, calc(100vw - 32px)); }
+  .ev-map { position: absolute; left: 50%; top: 0; translate: -50% 0; width: var(--mapw); }
+  .ev-map svg.map { width: 100%; height: auto; display: block; overflow: visible; }
+  /* лента начинается чуть ниже середины карты, чтобы города мероприятий оставались видны */
+  .ev-track { position: relative; z-index: 2; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-top: calc(var(--mapw) * 1.067 * .56); padding: 0 max(var(--gutter), calc((100vw - 1120px) / 2 + var(--gutter)));
+    scroll-padding-left: max(var(--gutter), calc((100vw - 1120px) / 2 + var(--gutter))); }
+  .ev-track::-webkit-scrollbar { display: none; }
+  .ev-card { position: relative; flex: 0 0 min(420px, 82vw); aspect-ratio: 1.1; scroll-snap-align: start; border-radius: 12px; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(20px, 2.6vw, 30px); isolation: isolate; transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s, box-shadow .5s; }
+  .ev-card .bg { position: absolute; inset: -20px; z-index: -1; }
+  .ev-card .bg img { width: 100%; height: 100%; object-fit: cover; filter: blur(14px) saturate(1.15); transform: scale(1.1); transition: filter .6s; }
+  .ev-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(60,38,20,.25), rgba(40,26,14,.55)); }
+  .ev-card:hover .bg img, .ev-card.active .bg img { filter: blur(8px) saturate(1.2); }
+  .ev-card .q { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; letter-spacing: -.01em; }
+  .ev-card .go { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.75); }
+  .ev-card .go svg { transition: transform .25s; }
+  .ev-card:hover .go { color: #fff; }
+  .ev-card:hover .go svg { transform: translate(2px, -2px); }
+  .ev-card .who { font-size: 15px; line-height: 1.45; }
+  .ev-card .who span { display: block; color: rgba(255,255,255,.62); }
+  .ev-stage.touring .ev-card { opacity: .8; }
+  .ev-stage.touring .ev-card.active { opacity: 1; box-shadow: 0 0 0 2px var(--accent), 0 24px 50px rgba(240,122,43,.25); }
   /* анимация карты: точки проявляются волной от Дели (--d — задержка точки), затем по кругу
-     дуга из Москвы к городу каждого мероприятия, импульс в городе и подсветка его карточки */
-  .mapbox svg.map { overflow: visible; }
+     дуга из Москвы к городу каждого мероприятия и импульс в городе; наведение на карточку — сразу к её городу */
   .map circle.dot { transform-box: fill-box; transform-origin: center; transform: scale(0); transition: transform .6s cubic-bezier(.3,1.5,.5,1) var(--d); }
   .map.go circle.dot { transform: scale(1); }
   .map .arc { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: opacity .5s; }
@@ -299,16 +316,17 @@
   .map .plane { fill: var(--accent); stroke: #fff; stroke-width: 2.5; opacity: 0; transition: opacity .3s; }
   .map .plane.on { opacity: 1; }
   .map .ping { fill: none; stroke: var(--accent); stroke-width: 2; transform-box: fill-box; transform-origin: center; opacity: 0; animation: ping 1.6s cubic-bezier(.2,.6,.3,1) forwards; }
-  .map .ping:nth-of-type(2) { animation-delay: .35s; }
+  .map .ping.late { animation-delay: .35s; }
+  .map .pings.hold .ping { animation-iteration-count: infinite; }
+  .map .halo { fill: var(--accent); opacity: 0; animation: halo .5s ease forwards; }
+  @keyframes halo { to { opacity: .22; } }
   @keyframes ping { from { transform: scale(.4); opacity: .9; } to { transform: scale(3.6); opacity: 0; } }
   .origin { position: absolute; left: 6.7%; top: 1.6%; translate: -50% -50%; display: inline-flex; align-items: center; gap: 7px; background: #fff; border-radius: 999px; padding: 5px 11px 5px 7px; font-size: 13px; box-shadow: 0 8px 24px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04); z-index: 1; }
   .origin i { width: 10px; height: 10px; border-radius: 50%; background: #2f5d8a; box-shadow: 0 0 0 3px rgba(47,93,138,.18); }
-  .evt { transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s, box-shadow .5s; }
-  .mapbox.touring .evt { opacity: .55; }
-  .mapbox.touring .evt.active { opacity: 1; transform: translateY(-4px); box-shadow: 0 20px 44px rgba(240,122,43,.18), 0 0 0 1.5px var(--accent); }
   @media (max-width: 760px) {
-    .evt { position: static; width: auto; margin: 8px 16px 0; }
-    .counter { position: static; transform: none; margin-top: 20px; }
+    .ev-head { flex-direction: column; align-items: flex-start; }
+    .ev-badges { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .ev-badges p + p { margin-left: 0; padding-left: 0; border-left: 0; }
     .origin { left: 16px; translate: 0 -50%; }
   }
 
@@ -603,28 +621,35 @@
 
 <!-- ============ EVENTS MAP ============ -->
 <section class="events" id="events">
-  <div class="wrap">
-    <h2 class="h-xl rv">Ближайшие мероприятия<br><em>в Индии</em></h2>
+  <div class="wrap ev-head rv">
+    <div>
+      <h2 class="ev-title">Ближайшие мероприятия.</h2>
+      <div class="ev-badges"><p><span>Запланировано в 2027 году</span><b id="evCount">20</b></p><p><span>Ближайшее</span><b>10 января</b></p></div>
+    </div>
+    <div class="ev-ctrls"><button type="button" class="prev" aria-label="Назад" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 2 4.7 7.3a1 1 0 0 0 0 1.4L10 14" stroke="currentColor" stroke-width="1.4"/></svg></button><button type="button" class="next" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 2 4.7 7.3a1 1 0 0 0 0 1.4L10 14" stroke="currentColor" stroke-width="1.4"/></svg></button></div>
   </div>
-  <div class="mapbox rv">
-    <svg class="map" id="map" viewBox="0 0 600 640" role="img" aria-label="Точечная карта Индии с городами мероприятий"></svg>
-    <div class="origin" aria-hidden="true"><i></i>Москва</div>
-    <a class="evt" data-ev="0" href="https://www.vibrantgujarat.com/" target="_blank" rel="noopener" style="left:-10%;top:66%">
-      <div class="h"><span class="live"></span><span class="mono">10—12 янв 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="name">Vibrant Gujarat Global Summit</div>
-      <div class="where">Индия, Гуджарат</div>
-    </a>
-    <a class="evt" data-ev="1" href="https://www.indiaenergyweek.com/" target="_blank" rel="noopener" style="right:-9%;top:56%">
-      <div class="h"><span class="live"></span><span class="mono">28—31 янв 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="name">India Energy Week</div>
-      <div class="where">Индия, Калькутта</div>
-    </a>
-    <a class="evt" data-ev="2" href="https://www.bharat-mobility.com/" target="_blank" rel="noopener" style="right:-4%;top:10%">
-      <div class="h"><span class="live"></span><span class="mono">4—9 фев 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="name">Bharat Mobility</div>
-      <div class="where">Индия, Дели</div>
-    </a>
-    <div class="counter"><b id="evCount">20</b>мероприятий запланировано в 2027 году</div>
+  <div class="ev-stage">
+    <div class="ev-map">
+      <svg class="map" id="map" viewBox="0 0 600 640" role="img" aria-label="Точечная карта Индии с городами мероприятий"></svg>
+      <div class="origin" aria-hidden="true"><i></i>Москва</div>
+    </div>
+    <div class="ev-track">
+      <a class="ev-card" data-ev="0" href="https://www.vibrantgujarat.com/" target="_blank" rel="noopener">
+        <span class="bg" aria-hidden="true"><img src="img/hero-mobile.webp" alt="" loading="lazy" decoding="async"></span>
+        <div><div class="q">Vibrant Gujarat Global Summit</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="who">10—12 января 2027<span>Индия, Гуджарат</span></div>
+      </a>
+      <a class="ev-card" data-ev="1" href="https://www.indiaenergyweek.com/" target="_blank" rel="noopener">
+        <span class="bg" aria-hidden="true"><img src="img/rupee-mobile.webp" alt="" loading="lazy" decoding="async"></span>
+        <div><div class="q">India Energy Week</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="who">28—31 января 2027<span>Индия, Калькутта</span></div>
+      </a>
+      <a class="ev-card" data-ev="2" href="https://www.bharat-mobility.com/" target="_blank" rel="noopener">
+        <span class="bg" aria-hidden="true"><img src="img/logistics-mobile.webp" alt="" loading="lazy" decoding="async"></span>
+        <div><div class="q">Bharat Mobility</div><span class="go">Сайт мероприятия <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="who">4—9 февраля 2027<span>Индия, Дели</span></div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -914,21 +939,25 @@
     out += `<circle class="dot" style="--d:${delay}ms" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(2)}" fill="${fill}"/>`;
   }
   const map = document.getElementById('map');
-  map.innerHTML = out + '<path class="arc" pathLength="1"/><circle class="plane" r="5"/><g class="pings"></g>';
+  map.innerHTML = out + '<path class="arc" pathLength="1"/><g class="pings"></g><circle class="plane" r="5"/>';
 
-  // тур по мероприятиям в порядке дат: дуга из Москвы → импульс в городе → карточка подсвечена
-  const mapbox = map.parentElement, ORIGIN = [40, 10];
+  // тур по мероприятиям в порядке дат: дуга из Москвы → импульс в городе → карточка подсвечена.
+  // Наведение (или фокус) на карточку прерывает тур и сразу ведёт дугу к её городу; уход — тур продолжается
+  const stage = document.querySelector('.ev-stage'), ORIGIN = [40, 10];
   const evCities = cities.filter(c => c.ev !== undefined).sort((a, b) => a.ev - b.ev).map(c => toXY(c.p));
   const arc = map.querySelector('.arc'), plane = map.querySelector('.plane'), pings = map.querySelector('.pings');
-  const cards = [...mapbox.querySelectorAll('.evt')];
-  let tourTimer = 0, mapRaf = 0, stopTour = true;
-  const flyTo = (k) => {
-    if (stopTour) return;
+  const cards = [...stage.querySelectorAll('.ev-card')];
+  let tourTimer = 0, mapRaf = 0, visible = false, hovered = null, current = 0;
+  const halt = () => { clearTimeout(tourTimer); cancelAnimationFrame(mapRaf); };
+  const flyTo = (k, hold = false) => {
+    if (!visible) return;
+    halt(); current = k;
     const [cx, cy] = evCities[k], [ox, oy] = ORIGIN;
     arc.setAttribute('d', `M${ox} ${oy} Q${cx - (cx - ox) * .15} ${oy - 40} ${cx} ${cy}`);
     arc.classList.remove('fade');
+    pings.innerHTML = ''; pings.classList.toggle('hold', hold);
     cards.forEach(c => c.classList.toggle('active', +c.dataset.ev === k));
-    const len = arc.getTotalLength(), t0 = performance.now(), dur = 1500;
+    const len = arc.getTotalLength(), t0 = performance.now(), dur = hold ? 650 : 1500;
     plane.classList.add('on');
     const tick = now => {
       const t = Math.min(1, (now - t0) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -937,11 +966,20 @@
       plane.setAttribute('cx', pt.x); plane.setAttribute('cy', pt.y);
       if (t < 1) { mapRaf = requestAnimationFrame(tick); return; }
       plane.classList.remove('on');
-      pings.innerHTML = `<circle class="ping" cx="${cx}" cy="${cy}" r="10"/><circle class="ping" cx="${cx}" cy="${cy}" r="10"/>`;
-      tourTimer = setTimeout(() => { arc.classList.add('fade'); tourTimer = setTimeout(() => flyTo((k + 1) % evCities.length), 600); }, 2200);
+      pings.innerHTML = (hold ? `<circle class="halo" cx="${cx}" cy="${cy}" r="26"/>` : '') +
+        `<circle class="ping" cx="${cx}" cy="${cy}" r="10"/><circle class="ping late" cx="${cx}" cy="${cy}" r="10"/>`;
+      if (!hold) tourTimer = setTimeout(() => { arc.classList.add('fade'); tourTimer = setTimeout(() => flyTo((k + 1) % evCities.length), 600); }, 2200);
     };
     mapRaf = requestAnimationFrame(tick);
   };
+  const resume = () => { tourTimer = setTimeout(() => { pings.classList.remove('hold'); arc.classList.add('fade'); tourTimer = setTimeout(() => flyTo((current + 1) % evCities.length), 600); }, 1200); };
+  cards.forEach(c => {
+    const k = +c.dataset.ev;
+    const enter = () => { hovered = k; flyTo(k, true); };
+    const leave = () => { if (hovered !== k) return; hovered = null; if (visible) { halt(); resume(); } };
+    c.addEventListener('pointerenter', enter); c.addEventListener('focus', enter);
+    c.addEventListener('pointerleave', leave); c.addEventListener('blur', leave);
+  });
   const countUp = el => {
     const to = +el.textContent, t0 = performance.now();
     const step = now => { const t = Math.min(1, (now - t0) / 1200); el.textContent = Math.round(to * (1 - Math.pow(1 - t, 3))); if (t < 1) requestAnimationFrame(step); };
@@ -953,18 +991,31 @@
       map.classList.add('go');
       countUp(document.getElementById('evCount'));
     }
-    if (e.isIntersecting && stopTour) {
-      stopTour = false;
-      mapbox.classList.add('touring');
-      tourTimer = setTimeout(() => flyTo(0), 1400);
-    } else if (!e.isIntersecting && !stopTour) {
-      stopTour = true;
-      clearTimeout(tourTimer); cancelAnimationFrame(mapRaf);
-      mapbox.classList.remove('touring');
+    if (e.isIntersecting && !visible) {
+      visible = true;
+      stage.classList.add('touring');
+      tourTimer = setTimeout(() => flyTo(hovered ?? 0, hovered !== null), 1400);
+    } else if (!e.isIntersecting && visible) {
+      visible = false; halt();
+      stage.classList.remove('touring');
       cards.forEach(c => c.classList.remove('active'));
       plane.classList.remove('on'); arc.classList.add('fade'); pings.innerHTML = '';
     }
-  }, { threshold: .3 }).observe(mapbox);
+  }, { threshold: .3 }).observe(stage);
+
+  // стрелки ленты: прокрутка на одну карточку, неактивны у краёв и если всё помещается
+  const track = stage.querySelector('.ev-track'), prevBtn = document.querySelector('.ev-ctrls .prev'), nextBtn = document.querySelector('.ev-ctrls .next');
+  const syncCtrls = () => {
+    const max = track.scrollWidth - track.clientWidth - 2;
+    prevBtn.disabled = track.scrollLeft <= 2;
+    nextBtn.disabled = track.scrollLeft >= max;
+  };
+  const stepBy = dir => track.scrollBy({ left: dir * (cards[0].offsetWidth + 16), behavior: reduce ? 'auto' : 'smooth' });
+  prevBtn.addEventListener('click', () => stepBy(-1));
+  nextBtn.addEventListener('click', () => stepBy(1));
+  track.addEventListener('scroll', syncCtrls, { passive: true });
+  addEventListener('resize', syncCtrls);
+  syncCtrls();
 
   // hero email → форма
   document.getElementById('heroForm').addEventListener('submit', e => {
