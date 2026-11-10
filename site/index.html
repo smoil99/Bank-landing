@@ -327,10 +327,7 @@
   .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 11px; border: 0; cursor: pointer; font-size: 14px; background: var(--ink); color: #fff; transition: transform .2s, background .2s; }
   .btn:hover { transform: translateY(-1px); }
   .btn.light { background: #fff; color: var(--ink); }
-  .fx { position: absolute; z-index: 2; top: clamp(24px, 4vw, 48px); right: clamp(24px, 4vw, 48px); background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 12px; width: 250px; box-shadow: 0 20px 50px rgba(0,0,0,.18); font-size: 13px; }
-  .fx .row { display: flex; justify-content: space-between; align-items: center; background: #f7f6f3; border-radius: 9px; padding: 9px 10px; margin-top: 6px; }
-  .fx .ok { display: inline-flex; gap: 6px; align-items: center; font-family: var(--mono); font-size: 11px; color: #3c7a4b; background: #e8f1e9; border-radius: 6px; padding: 2px 6px; }
-  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .fx { position: relative; top: auto; right: auto; margin: 24px 24px 0; width: auto; } .promo .stage { align-items: stretch; } }
+  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .promo .stage { align-items: stretch; } }
 
   /* ---------- Form ---------- */
   .apply { padding: 0 0 clamp(100px, 14vw, 180px); }
@@ -643,12 +640,6 @@
   <div class="wrap">
     <div class="stage rv">
       <div class="paint" aria-hidden="true"><img src="img/rupee.webp" srcset="img/rupee-mobile.webp 768w, img/rupee.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
-      <div class="fx" aria-hidden="true">
-        <div style="display:flex;align-items:center;gap:8px"><svg class="mark"><use href="#mark"/></svg>Перевод контрагенту</div>
-        <div class="row"><span>Валюта</span><span class="mono">INR ₹</span></div>
-        <div class="row"><span>Без конвертации</span><span class="ok"><svg width="9" height="9" style="background:#3c7a4b;border-radius:50%"><use href="#check"/></svg>USD/EUR</span></div>
-        <div class="row"><span>Зачисление</span><span class="mono">от 10 мин</span></div>
-      </div>
       <div class="content">
         <h2>Хотите работать с Индией? <em>Откройте счёт в рупиях</em></h2>
         <div>
