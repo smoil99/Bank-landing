@@ -336,6 +336,11 @@
   .btn:hover { transform: translateY(-1px); }
   .btn.light { background: #fff; color: var(--ink); }
   @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; align-content: end; row-gap: 16px; } .promo .stage { align-items: stretch; } }
+  /* на телефоне фото — в верхней части блока, чтобы в кадр попало больше монет; низ растворяется в фоне под текстом */
+  @media (max-width: 760px) {
+    .promo .paint { background: #2a1a10; }
+    .promo .paint img { height: 62%; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
+  }
 
   /* ---------- Form ---------- */
   .apply { padding: 0 0 clamp(100px, 14vw, 180px); }
