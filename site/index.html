@@ -80,7 +80,7 @@
   .paint { position: absolute; inset: 0; overflow: hidden; background: #1c1510; } /* тёплый тёмный, в тон фото, пока оно грузится */
   .paint img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .hero .paint::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(22,21,18,.24), rgba(22,21,18,.5) 55%, rgba(22,21,18,.52)); }
-  .promo .paint::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(40,24,10,.12), rgba(40,24,10,.78)); }
+  .promo .paint img { object-position: center top; }
   .feature .paint::after { content: ""; position: absolute; inset: 0; background: rgba(25,36,28,.08); }
   @media (max-width: 760px) { .hero .paint img { object-position: 48% center; } }
 
@@ -320,17 +320,19 @@
 
   /* ---------- Rupee promo ---------- */
   .promo { padding: 0 0 clamp(80px, 12vw, 140px); }
-  .promo .stage { position: relative; border-radius: var(--r-xl); overflow: hidden; min-height: 540px; display: grid; align-items: end; color: #fff; isolation: isolate; }
+  /* пропорции фото (3:2): монеты сверху, текст на пустом низу */
+  .promo .stage { position: relative; border-radius: var(--r-xl); overflow: hidden; min-height: 540px; aspect-ratio: 3 / 2; display: grid; align-items: end; color: var(--ink); isolation: isolate; }
   .promo .content { position: relative; z-index: 2; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
   .promo h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -.01em; }
-  .promo p { font-size: 15px; opacity: .95; max-width: 40ch; }
+  .promo p { font-size: 15px; color: var(--ink-2); max-width: 40ch; }
   .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 11px; border: 0; cursor: pointer; font-size: 14px; background: var(--ink); color: #fff; transition: transform .2s, background .2s; }
   .btn:hover { transform: translateY(-1px); }
   .btn.light { background: #fff; color: var(--ink); }
-  .fx { position: absolute; z-index: 2; top: clamp(24px, 4vw, 48px); right: clamp(24px, 4vw, 48px); background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 12px; width: 250px; box-shadow: 0 20px 50px rgba(0,0,0,.18); font-size: 13px; }
+  /* карточка в просвете между монетами, чтобы не закрывать их */
+  .fx { position: absolute; z-index: 2; top: 9%; left: 47%; background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 12px; width: 250px; box-shadow: 0 20px 50px rgba(0,0,0,.18); font-size: 13px; }
   .fx .row { display: flex; justify-content: space-between; align-items: center; background: #f7f6f3; border-radius: 9px; padding: 9px 10px; margin-top: 6px; }
   .fx .ok { display: inline-flex; gap: 6px; align-items: center; font-family: var(--mono); font-size: 11px; color: #3c7a4b; background: #e8f1e9; border-radius: 6px; padding: 2px 6px; }
-  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .fx { position: relative; top: auto; right: auto; margin: 24px 24px 0; width: auto; } .promo .stage { align-items: stretch; } }
+  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .fx { position: relative; top: auto; right: auto; left: auto; margin: 24px 24px 0; width: auto; } .promo .stage { align-items: stretch; aspect-ratio: auto; } }
 
   /* ---------- Form ---------- */
   .apply { padding: 0 0 clamp(100px, 14vw, 180px); }
@@ -642,7 +644,7 @@
 <section class="promo" id="india">
   <div class="wrap">
     <div class="stage rv">
-      <div class="paint" aria-hidden="true"><img src="img/rupee.webp" srcset="img/rupee-mobile.webp 768w, img/rupee.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
+      <div class="paint" aria-hidden="true"><img src="img/promo-rupee.webp" srcset="img/promo-rupee-mobile.webp 768w, img/promo-rupee.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
       <div class="fx" aria-hidden="true">
         <div style="display:flex;align-items:center;gap:8px"><svg class="mark"><use href="#mark"/></svg>Перевод контрагенту</div>
         <div class="row"><span>Валюта</span><span class="mono">INR ₹</span></div>
@@ -653,7 +655,7 @@
         <h2>Хотите работать с Индией? <em>Откройте счёт в рупиях</em></h2>
         <div>
           <p>Платите и получайте переводы в валюте контрагента, без конвертации через доллар или евро. Переводы — от 10 минут.</p>
-          <a class="btn light" href="#" style="margin-top:20px">Узнать больше <svg width="14" height="14"><use href="#arrow"/></svg></a>
+          <a class="btn" href="#" style="margin-top:20px">Узнать больше <svg width="14" height="14"><use href="#arrow"/></svg></a>
         </div>
       </div>
     </div>
