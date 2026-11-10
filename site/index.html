@@ -278,6 +278,11 @@
   .evt .h .tag { margin-left: auto; }
   .evt .name { font-family: var(--serif); font-size: 17px; line-height: 1.2; }
   .evt .where { color: var(--ink-2); margin-top: 4px; }
+  /* карточка — ссылка на сайт мероприятия */
+  a.evt { display: block; color: inherit; }
+  .evt .ext { margin-left: auto; color: var(--ink-3); transition: color .2s, transform .2s; }
+  a.evt:hover { opacity: 1 !important; transform: translateY(-4px); box-shadow: 0 20px 44px rgba(240,122,43,.18), 0 0 0 1.5px var(--accent); }
+  a.evt:hover .ext { color: var(--accent); transform: translate(2px, -2px); }
   .live { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(240,122,43,.18); flex: none; }
   .counter { position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 12px; background: var(--ink); color: #fff; border-radius: 12px; padding: 6px 14px 6px 6px; font-size: 13px; white-space: nowrap; }
   .counter b { font-family: var(--serif); font-weight: 400; font-size: 20px; background: rgba(255,255,255,.12); border-radius: 8px; padding: 2px 10px; min-width: 2.2em; text-align: center; }
@@ -588,21 +593,21 @@
   <div class="mapbox rv">
     <svg class="map" id="map" viewBox="0 0 600 640" role="img" aria-label="Точечная карта Индии с городами мероприятий"></svg>
     <div class="origin" aria-hidden="true"><i></i>Москва</div>
-    <div class="evt" data-ev="0" style="left:-10%;top:66%">
-      <div class="h"><span class="live"></span><span class="mono">10—12 янв 2027</span></div>
+    <a class="evt" data-ev="0" href="https://www.vibrantgujarat.com/" target="_blank" rel="noopener" style="left:-10%;top:66%">
+      <div class="h"><span class="live"></span><span class="mono">10—12 янв 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="name">Vibrant Gujarat Global Summit</div>
       <div class="where">Индия, Гуджарат</div>
-    </div>
-    <div class="evt" data-ev="1" style="right:-9%;top:56%">
-      <div class="h"><span class="live"></span><span class="mono">28—31 янв 2027</span></div>
+    </a>
+    <a class="evt" data-ev="1" href="https://www.indiaenergyweek.com/" target="_blank" rel="noopener" style="right:-9%;top:56%">
+      <div class="h"><span class="live"></span><span class="mono">28—31 янв 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="name">India Energy Week</div>
       <div class="where">Индия, Калькутта</div>
-    </div>
-    <div class="evt" data-ev="2" style="right:-4%;top:10%">
-      <div class="h"><span class="live"></span><span class="mono">4—9 фев 2027</span></div>
+    </a>
+    <a class="evt" data-ev="2" href="https://www.bharat-mobility.com/" target="_blank" rel="noopener" style="right:-4%;top:10%">
+      <div class="h"><span class="live"></span><span class="mono">4—9 фев 2027</span><svg class="ext" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="name">Bharat Mobility</div>
       <div class="where">Индия, Дели</div>
-    </div>
+    </a>
     <div class="counter"><b id="evCount">20</b>мероприятий запланировано в 2027 году</div>
   </div>
 </section>
