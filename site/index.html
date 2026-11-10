@@ -43,6 +43,19 @@
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 11px; background: #fff; font-size: 14px; letter-spacing: .005em; white-space: nowrap; transition: background .2s, transform .2s; }
   .pill:hover { background: #f3f1ec; }
   .pill.brand { gap: 6px; padding-left: 9px; }
+  /* ссылки на секции: в ряд, пока помещаются; иначе — кнопка «Разделы» с выпадающим списком (класс .compact ставит скрипт) */
+  .pillgroup.left { position: relative; }
+  .navlinks { display: flex; gap: 2px; }
+  .pill.more { display: none; border: 0; cursor: pointer; font: inherit; font-size: 14px; color: inherit; }
+  .pill.more svg { transition: transform .25s; }
+  .pill.more[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .nav.compact .navlinks { display: none; }
+  .nav.compact .pill.more { display: inline-flex; gap: 6px; }
+  .navmenu { position: absolute; left: 0; top: calc(100% + 6px); min-width: 230px; display: grid; gap: 2px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.82); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 16px 40px rgba(0,0,0,.14); }
+  .navmenu[hidden] { display: none; }
+  .navmenu .pill { justify-content: flex-start; }
+  .pill.is-current { background: var(--ink); color: #fff; }
+  section, header { scroll-margin-top: 60px; }
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
   .mark { display: block; width: 20px; height: 20px; flex: none; }
@@ -370,8 +383,19 @@
 <nav class="nav" aria-label="Основная навигация">
   <div class="pillgroup left">
     <a class="pill brand" href="#top"><svg class="mark"><use href="#mark"/></svg><span class="hide-sm">Деловой совет</span></a>
-    <a class="pill" href="#about">О Совете</a>
-    <a class="pill" href="#india">Бизнес с Индией</a>
+    <div class="navlinks">
+      <a class="pill" href="#about">О Совете</a>
+      <a class="pill" href="#links">Деловые связи</a>
+      <a class="pill" href="#projects">Проекты</a>
+      <a class="pill" href="#expertise">Экспертиза</a>
+      <a class="pill" href="#dirs">Направления</a>
+      <a class="pill" href="#leaders">Руководство</a>
+      <a class="pill" href="#events">Мероприятия</a>
+      <a class="pill" href="#news">Новости</a>
+      <a class="pill" href="#india">Бизнес с Индией</a>
+    </div>
+    <button class="pill more" type="button" aria-expanded="false" aria-controls="navMenu">Разделы<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="navmenu" id="navMenu" hidden></div>
   </div>
   <div class="pillgroup right">
     <a class="pill cta" href="#apply"><span class="hide-sm">Оставить заявку</span><span class="show-sm">Заявка</span></a>
@@ -413,7 +437,7 @@
 </section>
 
 <!-- ============ FEATURE 1 ============ -->
-<section class="feature">
+<section class="feature" id="links">
   <div class="wrap">
     <div class="rv">
       <h3 class="h-md">Деловые связи и сотрудничество</h3>
@@ -447,7 +471,7 @@
 </section>
 
 <!-- ============ FEATURE 2 ============ -->
-<section class="feature">
+<section class="feature" id="projects">
   <div class="wrap">
     <div class="rv">
       <h3 class="h-md">Совместные инициативы и проекты</h3>
@@ -486,7 +510,7 @@
 </section>
 
 <!-- ============ FEATURE 3 ============ -->
-<section class="feature" id="india">
+<section class="feature" id="expertise">
   <div class="wrap">
     <div class="rv">
       <h3 class="h-md">Экспертиза и знания о рынках</h3>
@@ -537,7 +561,7 @@
 </section>
 
 <!-- ============ QUOTE ============ -->
-<section class="quote">
+<section class="quote" id="leaders">
   <div class="wrap">
     <figure class="qcard rv">
       <div class="portrait"><div class="paint" aria-hidden="true"></div><div class="initials">ГГ</div>
@@ -552,7 +576,7 @@
 </section>
 
 <!-- ============ EVENTS MAP ============ -->
-<section class="events">
+<section class="events" id="events">
   <div class="wrap">
     <h2 class="h-xl rv">Ближайшие мероприятия<br><em>в Индии</em></h2>
   </div>
@@ -579,7 +603,7 @@
 </section>
 
 <!-- ============ NEWS ============ -->
-<section class="news">
+<section class="news" id="news">
   <div class="wrap">
     <div class="news-head rv">
       <h2 class="h-xl">Новости</h2>
@@ -597,7 +621,7 @@
 </section>
 
 <!-- ============ RUPEE PROMO ============ -->
-<section class="promo">
+<section class="promo" id="india">
   <div class="wrap">
     <div class="stage rv">
       <div class="paint" aria-hidden="true"><img src="img/rupee.webp" srcset="img/rupee-mobile.webp 768w, img/rupee.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" loading="lazy" decoding="async" alt=""></div>
@@ -715,6 +739,34 @@
   addEventListener('resize', () => { measure(); queue(); });
   measure(); renderDirs();
   document.fonts?.ready.then(() => { measure(); renderDirs(); });
+
+  // меню: ссылки на секции в ряд или «Разделы», если не помещаются; подсветка текущей секции
+  const nav = document.querySelector('.nav'), navLinks = nav.querySelector('.navlinks');
+  const moreBtn = nav.querySelector('.pill.more'), navMenu = document.getElementById('navMenu');
+  navMenu.innerHTML = navLinks.innerHTML;
+  const setMenu = open => { navMenu.hidden = !open; moreBtn.setAttribute('aria-expanded', open); };
+  const fitNav = () => {
+    nav.classList.remove('compact');
+    const groups = [...nav.querySelectorAll(':scope > .pillgroup')];
+    const need = groups.reduce((w, g) => w + g.scrollWidth, 0) + 6 * (groups.length - 1);
+    const compact = need > nav.clientWidth;
+    nav.classList.toggle('compact', compact);
+    if (!compact) setMenu(false);
+  };
+  moreBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(navMenu.hidden); });
+  navMenu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('click', e => { if (!navMenu.hidden && !e.target.closest('.navmenu')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  addEventListener('resize', fitNav);
+  fitNav();
+  document.fonts?.ready.then(fitNav);
+  const spyLinks = [...nav.querySelectorAll('.navlinks a, .navmenu a')];
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    spyLinks.forEach(a => a.classList.toggle('is-current', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  [...new Set(spyLinks.map(a => a.getAttribute('href')))].forEach(h => { const el = document.querySelector(h); if (el) spy.observe(el); });
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) spyLinks.forEach(a => a.classList.remove('is-current')); }, { rootMargin: '-45% 0px -50% 0px' }).observe(document.getElementById('top'));
 
   // hero ticker
   const ticks = [...document.querySelectorAll('.ticker span')];
