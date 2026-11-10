@@ -333,7 +333,7 @@
   .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 11px; border: 0; cursor: pointer; font-size: 14px; background: var(--ink); color: #fff; transition: transform .2s, background .2s; }
   .btn:hover { transform: translateY(-1px); }
   .btn.light { background: #fff; color: var(--ink); }
-  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; } .promo .stage { align-items: stretch; } }
+  @media (max-width: 760px) { .promo .content { grid-template-columns: 1fr; align-content: end; row-gap: 16px; } .promo .stage { align-items: stretch; } }
 
   /* ---------- Form ---------- */
   .apply { padding: 0 0 clamp(100px, 14vw, 180px); }
