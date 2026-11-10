@@ -39,7 +39,7 @@
 
   /* ---------- Nav ---------- */
   .nav { position: fixed; inset: 12px 12px auto; z-index: 50; display: flex; justify-content: space-between; gap: 6px; pointer-events: none; }
-  .pillgroup { pointer-events: auto; display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 20px rgba(0,0,0,.06); }
+  .pillgroup { pointer-events: auto; display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.62); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 20px rgba(0,0,0,.06); }
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 11px; background: #fff; font-size: 14px; letter-spacing: .005em; white-space: nowrap; transition: background .2s, transform .2s; }
   .pill:hover { background: #f3f1ec; }
   .pill.brand { gap: 6px; padding-left: 9px; }
@@ -61,6 +61,9 @@
   .navmenu .pill { justify-content: flex-start; }
   .pill.is-current { background: var(--ink); color: #fff; }
   section, header { scroll-margin-top: 60px; }
+  /* в шапке кнопки без собственной подложки — только стеклянная группа; белая — при наведении */
+  .nav .pill:not(.cta):not(.is-current) { background: transparent; }
+  .nav .pill:not(.cta):not(.is-current):hover { background: rgba(255,255,255,.7); }
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
   .mark { display: block; width: 20px; height: 20px; flex: none; }
