@@ -372,7 +372,8 @@
   .foot-col h5 { font-family: var(--serif); font-weight: 400; font-size: 16px; margin-bottom: 4px; }
   .foot-col a { color: rgba(255,255,255,.92); width: fit-content; }
   .foot-col a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-  .giant { font-family: var(--serif); font-weight: 300; font-size: clamp(30px, 8.8vw, 140px); line-height: .92; letter-spacing: -.035em; color: #fff; text-align: center; padding: 0 8px .06em; user-select: none; white-space: nowrap; }
+  /* иллюстрация внизу подвала: по центру, нижним краем к низу страницы */
+  .foot-ill { display: block; width: min(760px, 88%); height: auto; margin: 0 auto; }
   @media (max-width: 760px) { .foot { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; } }
 
   /* ---------- Reveal ---------- */
@@ -699,7 +700,7 @@
     <nav class="foot-col" aria-label="Деятельность"><h5>Деятельность</h5><a href="#links">Деловые связи</a><a href="#projects">Проекты</a><a href="#expertise">Экспертиза</a><a href="#events">Мероприятия</a></nav>
     <nav class="foot-col" aria-label="Участникам"><h5>Участникам</h5><a href="#india">Бизнес с Индией</a><a href="#news">Новости</a><a href="#apply">Оставить заявку</a><a href="#">Обработка персональных данных</a></nav>
   </div>
-  <div class="giant" aria-hidden="true">Российско-Индийский<br><em>деловой совет</em></div>
+  <img class="foot-ill" src="img/footer-handshake.webp" width="1400" height="1047" alt="" loading="lazy" decoding="async">
 </footer>
 
 <script>
