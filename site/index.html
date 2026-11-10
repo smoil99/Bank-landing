@@ -131,13 +131,15 @@
   /* строки заданы переносами в разметке; не даём им дробиться дальше, пока колонка позволяет */
   .pillars h4, .pillars p { white-space: nowrap; }
   .pillars p { color: var(--ink-2); font-size: 13.5px; }
-  /* на телефоне колонка на всю ширину: переносы строк из разметки отключены, текст в одну строку */
-  @media (max-width: 760px) {
-    .statement .pillars { grid-template-columns: 1fr; }
-    .pillars .ill { max-width: 260px; }
+  /* планшет — две колонки, телефон — одна; иллюстрации на всю ширину колонки,
+     переносы строк из разметки работают только в четырёх узких колонках десктопа */
+  @media (max-width: 900px) {
+    .statement .pillars { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+    .pillars > div { padding: 20px 0 28px; }
     .pillars h4 br, .pillars p br { display: none; }
     .pillars h4, .pillars p { white-space: normal; }
   }
+  @media (max-width: 560px) { .statement .pillars { grid-template-columns: 1fr; } }
 
   .feature { padding: 40px 0 72px; }
   .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
