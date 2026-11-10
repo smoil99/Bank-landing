@@ -46,12 +46,14 @@
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
   .nav .right { position: absolute; right: 0; top: 0; }
+  .nav .left { position: absolute; left: 0; top: 0; }
   .mark { display: block; width: 20px; height: 20px; flex: none; }
   .nav .show-sm { display: none; }
   @media (max-width: 640px) {
     .nav .hide-sm { display: none; }
     .nav .show-sm { display: inline; }
-    .nav { justify-content: flex-start; }
+    .nav { justify-content: flex-start; gap: 6px; }
+    .nav .left { position: static; }
   }
   @media (max-width: 400px) {
     .pill { padding: 0 10px; font-size: 13px; }
@@ -370,8 +372,10 @@
 
 <!-- ============ NAV ============ -->
 <nav class="nav" aria-label="Основная навигация">
-  <div class="pillgroup">
+  <div class="pillgroup left">
     <a class="pill brand" href="#top"><svg class="mark"><use href="#mark"/></svg><span class="hide-sm">Деловой совет</span></a>
+  </div>
+  <div class="pillgroup">
     <a class="pill" href="#about">О Совете</a>
     <a class="pill" href="#india">Бизнес с Индией</a>
   </div>
