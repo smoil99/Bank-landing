@@ -281,12 +281,13 @@
   .ev-badges b { font-weight: 500; color: var(--ink); }
   .ev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(28px, 4vw, 48px); }
   .ev-card { position: relative; aspect-ratio: .9; border-radius: 12px; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(20px, 2.4vw, 28px); isolation: isolate; transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s; }
-  .ev-card .bg { position: absolute; inset: 0; z-index: -1; }
-  .ev-card .bg img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .ev-card .bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+  /* фото размыто, при наведении (и фокусе с клавиатуры) становится чётким; scale прячет размытые края */
+  .ev-card .bg img { width: 100%; height: 100%; object-fit: cover; filter: blur(12px); transform: scale(1.12); transition: filter .6s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
   /* затемнение сверху и снизу — под заголовок и даты, середина фото остаётся чистой */
   .ev-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(20,14,8,.7) 0%, rgba(20,14,8,.12) 36%, rgba(20,14,8,.12) 50%, rgba(20,14,8,.88) 100%); }
   .ev-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px rgba(40,26,14,.22); }
-  .ev-card:hover .bg img { transform: scale(1.04); }
+  .ev-card:hover .bg img, .ev-card:focus-visible .bg img { filter: blur(0); transform: scale(1.04); }
   .ev-card .q { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.3vw, 32px); line-height: 1.15; letter-spacing: -.01em; }
   .ev-card .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
   .ev-card .go { flex: none; display: grid; place-items: center; width: 40px; height: 40px; color: #fff; }
