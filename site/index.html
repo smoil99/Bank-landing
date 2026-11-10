@@ -131,7 +131,13 @@
   /* строки заданы переносами в разметке; не даём им дробиться дальше, пока колонка позволяет */
   .pillars h4, .pillars p { white-space: nowrap; }
   .pillars p { color: var(--ink-2); font-size: 13.5px; }
-  @media (max-width: 760px) { .statement .pillars { grid-template-columns: 1fr; } .pillars .ill { max-width: 260px; } }
+  /* на телефоне колонка на всю ширину: переносы строк из разметки отключены, текст в одну строку */
+  @media (max-width: 760px) {
+    .statement .pillars { grid-template-columns: 1fr; }
+    .pillars .ill { max-width: 260px; }
+    .pillars h4 br, .pillars p br { display: none; }
+    .pillars h4, .pillars p { white-space: normal; }
+  }
 
   .feature { padding: 40px 0 72px; }
   .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
@@ -440,10 +446,10 @@
   <div class="wrap">
     <h2 class="h-xl rv" id="ink">От стратегического диалога —<br><em>к реальным результатам</em></h2>
     <div class="pillars rv">
-      <div><img class="ill" src="img/pillar-connections.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Деловые<br>связи</h4><p>Контакты и связи<br>между компаниями</p></div>
-      <div><img class="ill" src="img/pillar-dialogue.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Отраслевой<br>диалог</h4><p>Экспертные встречи<br>и комитеты</p></div>
-      <div><img class="ill" src="img/pillar-analytics.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Рыночная<br>аналитика</h4><p>Знания о рынках<br>России и Индии</p></div>
-      <div><img class="ill" src="img/pillar-projects.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Проектная<br>работа</h4><p>Подготовка<br>совместных инициатив</p></div>
+      <div><img class="ill" src="img/pillar-connections.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Деловые <br>связи</h4><p>Контакты и связи <br>между компаниями</p></div>
+      <div><img class="ill" src="img/pillar-dialogue.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Отраслевой <br>диалог</h4><p>Экспертные встречи <br>и комитеты</p></div>
+      <div><img class="ill" src="img/pillar-analytics.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Рыночная <br>аналитика</h4><p>Знания о рынках <br>России и Индии</p></div>
+      <div><img class="ill" src="img/pillar-projects.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Проектная <br>работа</h4><p>Подготовка <br>совместных инициатив</p></div>
     </div>
   </div>
 </section>
