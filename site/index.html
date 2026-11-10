@@ -243,7 +243,9 @@
   @keyframes blink { 50% { opacity: 0; } }
 
   /* ---------- Directions: фото и плашки проплывают снизу вверх, в центре сменяются надписи ---------- */
-  .directions { height: 340svh; position: relative; }
+  /* нижняя половина экрана секции пустая (надпись по центру) — следующий блок наезжает на неё,
+     чтобы отступ после надписи был как между остальными блоками */
+  .directions { height: 340svh; position: relative; margin-bottom: calc(52px - 50svh); }
   .dir-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
   .dt { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 0 16px; z-index: 3; pointer-events: none;
     opacity: 0; transform: scale(.8); transition: opacity .6s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
