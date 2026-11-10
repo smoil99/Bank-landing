@@ -38,22 +38,18 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
 
   /* ---------- Nav ---------- */
-  .nav { position: fixed; inset: 12px 12px auto; z-index: 50; display: flex; justify-content: center; pointer-events: none; }
+  .nav { position: fixed; inset: 12px 12px auto; z-index: 50; display: flex; justify-content: space-between; gap: 6px; pointer-events: none; }
   .pillgroup { pointer-events: auto; display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 20px rgba(0,0,0,.06); }
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 11px; background: #fff; font-size: 14px; letter-spacing: .005em; white-space: nowrap; transition: background .2s, transform .2s; }
   .pill:hover { background: #f3f1ec; }
   .pill.brand { gap: 6px; padding-left: 9px; }
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
-  .nav .right { position: absolute; right: 0; top: 0; }
-  .nav .left { position: absolute; left: 0; top: 0; }
   .mark { display: block; width: 20px; height: 20px; flex: none; }
   .nav .show-sm { display: none; }
   @media (max-width: 640px) {
     .nav .hide-sm { display: none; }
     .nav .show-sm { display: inline; }
-    .nav { justify-content: flex-start; gap: 6px; }
-    .nav .left { position: static; }
   }
   @media (max-width: 400px) {
     .pill { padding: 0 10px; font-size: 13px; }
@@ -374,8 +370,6 @@
 <nav class="nav" aria-label="Основная навигация">
   <div class="pillgroup left">
     <a class="pill brand" href="#top"><svg class="mark"><use href="#mark"/></svg><span class="hide-sm">Деловой совет</span></a>
-  </div>
-  <div class="pillgroup">
     <a class="pill" href="#about">О Совете</a>
     <a class="pill" href="#india">Бизнес с Индией</a>
   </div>
