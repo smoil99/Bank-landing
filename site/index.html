@@ -42,11 +42,11 @@
   .pillgroup { pointer-events: auto; display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(255,255,255,.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 20px rgba(0,0,0,.06); }
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 11px; background: #fff; font-size: 14px; letter-spacing: .005em; white-space: nowrap; transition: background .2s, transform .2s; }
   .pill:hover { background: #f3f1ec; }
-  .pill.brand { font-family: var(--serif); font-size: 15px; }
+  .pill.brand { gap: 6px; padding-left: 9px; }
   .pill.cta { background: var(--accent); color: var(--accent-ink); }
   .pill.cta:hover { background: #e06a1c; }
   .nav .right { position: absolute; right: 0; top: 0; }
-  .mark { width: 20px; height: 20px; flex: none; }
+  .mark { display: block; width: 20px; height: 20px; flex: none; }
   .nav .show-sm { display: none; }
   @media (max-width: 640px) {
     .nav .hide-sm { display: none; }
