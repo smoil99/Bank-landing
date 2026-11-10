@@ -122,6 +122,10 @@
   .h-xl { font-family: var(--serif); font-weight: 300; font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -.01em; text-wrap: balance; }
   .h-md { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; letter-spacing: -.005em; }
   .sub { color: var(--ink-2); font-size: 14px; letter-spacing: .005em; max-width: 46ch; margin-top: 10px; }
+  /* буквы заголовка серые и по мере прокрутки слева направо становятся чёрными (.on ставит скрипт) */
+  #ink .w { display: inline-block; white-space: nowrap; }
+  #ink .ch { color: #c9c4bb; transition: color .25s ease; }
+  #ink .ch.on { color: var(--ink); }
   .statement .pillars { margin: 56px auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; max-width: 900px; background: var(--line); border-radius: var(--r-lg); overflow: hidden; text-align: left; }
   .pillars > div { background: var(--bg); padding: 22px 22px 24px; }
   .pillars .n { color: var(--ink-3); }
@@ -444,7 +448,7 @@
 <!-- ============ STATEMENT + PILLARS ============ -->
 <section class="statement" id="about">
   <div class="wrap">
-    <h2 class="h-xl rv">От стратегического диалога —<br><em>к реальным результатам</em></h2>
+    <h2 class="h-xl rv" id="ink">От стратегического диалога —<br><em>к реальным результатам</em></h2>
     <div class="pillars rv">
       <div><span class="mono n">01</span><h4>Деловые связи</h4><p>Контакты и взаимодействие компаний</p></div>
       <div><span class="mono n">02</span><h4>Отраслевой диалог</h4><p>Экспертные встречи и комитеты</p></div>
@@ -813,6 +817,42 @@
   if (!reduce) {
     addEventListener('scroll', () => { if (!heroRaf && scrollY < hero.offsetHeight + 50) heroRaf = requestAnimationFrame(heroParallax); }, { passive: true });
     heroParallax();
+  }
+
+  // заголовок «От стратегического диалога…»: буквы чернеют слева направо, пока он проходит от низа экрана к трети высоты
+  const ink = document.getElementById('ink');
+  if (!reduce) {
+    const wrapLetters = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 1) { if (n.tagName !== 'BR') wrapLetters(n); return; }
+        if (n.nodeType !== 3) return;
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(part); return; }
+          const w = document.createElement('span'); w.className = 'w';
+          [...part].forEach(c => { const ch = document.createElement('span'); ch.className = 'ch'; ch.textContent = c; w.append(ch); });
+          frag.append(w);
+        });
+        n.replaceWith(frag);
+      });
+    };
+    ink.setAttribute('aria-label', [...ink.childNodes].map(n => n.nodeName === 'BR' ? ' ' : n.textContent).join('').replace(/\s+/g, ' ').trim());
+    wrapLetters(ink);
+    const letters = [...ink.querySelectorAll('.ch')];
+    let inkRaf = 0, lit = -1;
+    const paint = () => {
+      inkRaf = 0;
+      const r = ink.getBoundingClientRect(), vh = innerHeight;
+      const k = Math.min(1, Math.max(0, (vh * .85 - r.top) / (vh * .5)));
+      const n = Math.round(k * letters.length);
+      if (n === lit) return;
+      letters.forEach((el, i) => el.classList.toggle('on', i < n));
+      lit = n;
+    };
+    addEventListener('scroll', () => { if (!inkRaf) inkRaf = requestAnimationFrame(paint); }, { passive: true });
+    addEventListener('resize', paint);
+    paint();
   }
 
   // hero ticker
