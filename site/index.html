@@ -428,7 +428,7 @@
 <header class="hero" id="top">
   <div class="paint" aria-hidden="true"><img src="img/hero.webp" srcset="img/hero-mobile.webp 768w, img/hero.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" fetchpriority="high" decoding="async" alt=""></div>
   <div class="hero-inner">
-    <h1><span class="w"><span style="--i:0">Россия</span></span> <span class="w"><span style="--i:1">и</span></span> <span class="w"><span style="--i:2">Индия.</span></span><br><em><span class="w"><span style="--i:3">Общее</span></span> <span class="w"><span style="--i:4">дело.</span></span></em></h1>
+    <h1 aria-label="Россия и Индия. Общее дело."><span class="w"><span style="--i:0">Россия</span></span> <span class="w"><span style="--i:1">и</span></span> <span class="w"><span style="--i:2">Индия.</span></span><br><em id="heroRot" aria-hidden="true"><span class="w"><span style="--i:3">Общее</span></span> <span class="w"><span style="--i:4">дело.</span></span></em></h1>
     <p class="lede">Российско-Индийский деловой совет — площадка бизнес-интересов клиентов обеих стран</p>
     <div class="ticker" aria-live="polite">
       <span class="on"><svg><use href="#term"/></svg>Знакомим компании двух стран</span>
@@ -853,6 +853,25 @@
     addEventListener('scroll', () => { if (!inkRaf) inkRaf = requestAnimationFrame(paint); }, { passive: true });
     addEventListener('resize', paint);
     paint();
+  }
+
+  // вторая строка заголовка: фразы сменяются — слова уезжают вверх под маску, новые выезжают снизу
+  const HERO_PHRASES = ['Общее дело.', 'Прямой диалог.', 'Совместные проекты.', 'Новые рынки.', 'Общее будущее.'];
+  const heroRot = document.getElementById('heroRot');
+  if (!reduce) {
+    const EASE = 'cubic-bezier(.2,.8,.2,1)';
+    let phrase = 0;
+    const swap = async () => {
+      if (document.hidden || scrollY > hero.offsetHeight * .8) return;
+      const out = [...heroRot.querySelectorAll('.w > span')];
+      await Promise.all(out.map((el, i) => el.animate([{ transform: 'none' }, { transform: 'translateY(-110%)' }],
+        { duration: 450, delay: i * 70, easing: 'cubic-bezier(.6,0,.8,.4)', fill: 'forwards' }).finished));
+      phrase = (phrase + 1) % HERO_PHRASES.length;
+      heroRot.innerHTML = HERO_PHRASES[phrase].split(' ').map(w => `<span class="w"><span>${w}</span></span>`).join(' ');
+      [...heroRot.querySelectorAll('.w > span')].forEach((el, i) => el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }],
+        { duration: 700, delay: i * 80, easing: EASE, fill: 'backwards' }));
+    };
+    setTimeout(() => setInterval(swap, 3200), 2600);
   }
 
   // hero ticker
