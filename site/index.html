@@ -124,8 +124,10 @@
   #ink .ch.on { color: var(--ink); }
   .statement .pillars { margin: 56px auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; max-width: 900px; background: var(--line); border-radius: var(--r-lg); overflow: hidden; text-align: left; }
   .pillars > div { background: var(--bg); padding: 22px 22px 24px; }
-  .pillars .n { color: var(--ink-3); }
-  .pillars h4 { font-family: var(--serif); font-weight: 400; font-size: 19px; margin: 18px 0 4px; }
+  /* иллюстрации направлений: квадрат на всю ширину ячейки, слегка приближаются при наведении */
+  .pillars .ill { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 14px; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .pillars > div:hover .ill { transform: scale(1.03); }
+  .pillars h4 { font-family: var(--serif); font-weight: 400; font-size: 19px; margin: 16px 0 4px; }
   .pillars p { color: var(--ink-2); font-size: 13.5px; }
   @media (max-width: 760px) { .statement .pillars { grid-template-columns: 1fr 1fr; } }
 
@@ -440,10 +442,10 @@
   <div class="wrap">
     <h2 class="h-xl rv" id="ink">От стратегического диалога —<br><em>к реальным результатам</em></h2>
     <div class="pillars rv">
-      <div><span class="mono n">01</span><h4>Деловые связи</h4><p>Контакты и взаимодействие компаний</p></div>
-      <div><span class="mono n">02</span><h4>Отраслевой диалог</h4><p>Экспертные встречи и комитеты</p></div>
-      <div><span class="mono n">03</span><h4>Аналитика</h4><p>Знания о двух рынках</p></div>
-      <div><span class="mono n">04</span><h4>Проектная работа</h4><p>Подготовка совместных инициатив</p></div>
+      <div><img class="ill" src="img/pillar-connections.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Деловые связи</h4><p>Контакты и взаимодействие компаний</p></div>
+      <div><img class="ill" src="img/pillar-dialogue.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Отраслевой диалог</h4><p>Экспертные встречи и комитеты</p></div>
+      <div><img class="ill" src="img/pillar-analytics.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Аналитика</h4><p>Знания о двух рынках</p></div>
+      <div><img class="ill" src="img/pillar-projects.webp" width="512" height="512" alt="" loading="lazy" decoding="async"><h4>Проектная работа</h4><p>Подготовка совместных инициатив</p></div>
     </div>
   </div>
 </section>
