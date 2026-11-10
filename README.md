@@ -18,3 +18,6 @@ cd site && python3 -m http.server 8767
 затем http://localhost:8767
 
 Хостинг на Render: Static Site, Publish Directory = `site`, Build Command пустой.
+
+GitHub Pages: https://smoil99.github.io/Bank-landing/ — публикует `.github/workflows/pages.yml`
+при каждом пуше в `main` (Settings → Pages → Source = GitHub Actions).
