@@ -99,7 +99,7 @@
   .signup { position: absolute; z-index: 2; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.18); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset; width: min(360px, calc(100% - 32px)); }
   /* открытие первого экрана (html.intro → html.intro.ready): фото проявляется из размытия и приближения,
      слова заголовка выезжают из-под маски по очереди (--i), затем подзаголовок, тикер, форма и меню */
-  .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .08em .1em; margin: 0 -.08em -.1em; }
+  .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .14em .3em; margin: 0 -.14em -.3em; } /* запас под хвосты курсивных «р», «у» и наклон букв */
   .hero h1 .w > span { display: inline-block; }
   .intro .hero .paint img { transition: transform 2.6s cubic-bezier(.2,.7,.1,1), filter 1.8s ease; }
   .intro:not(.ready) .hero .paint img { transform: scale(1.15); filter: blur(14px) brightness(.55); }
