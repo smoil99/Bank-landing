@@ -142,7 +142,7 @@
     .pillars h4 br, .pillars p br { display: none; }
     .pillars h4, .pillars p { white-space: normal; }
   }
-  @media (max-width: 560px) { .statement .pillars { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .statement .pillars { grid-template-columns: 1fr; } .pillars .ill { width: 65%; margin: 0 auto; } .pillars > div { text-align: center; } } /* на телефоне иллюстрации на 35% меньше, всё по центру */
 
   .feature { padding: 40px 0 72px; }
   .feature .stage { position: relative; margin-top: 36px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; display: grid; place-items: center; isolation: isolate; }
@@ -378,7 +378,7 @@
       radial-gradient(55% 45% at 72% 52%, rgba(255,196,120,.85), transparent 70%),
       radial-gradient(45% 55% at 18% 72%, rgba(234,96,36,.85), transparent 70%),
       linear-gradient(180deg, var(--bg) 0, #f8efe6 3%, #f6e0cc 7%, #f4cba8 11%, #f2b382 15%, #f09c62 20%, #ee894c 26%, #ec7a3c 34%, #eb6f32 46%, #ea692d 62%, #e9662a 100%); }
-  .foot-cta { text-align: center; padding: clamp(120px, 16vw, 200px) 0 clamp(80px, 10vw, 140px); position: relative; z-index: 2; }
+  .foot-cta { text-align: center; padding-block: clamp(120px, 16vw, 200px) clamp(80px, 10vw, 140px); position: relative; z-index: 2; }
   .foot-cta h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(38px, 5.6vw, 76px); line-height: 1.05; letter-spacing: -.015em; text-wrap: balance; }
   .foot-cta p { margin: 18px auto 0; max-width: 42ch; font-size: 16px; color: rgba(255,255,255,.88); }
   .foot-cta .acts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
