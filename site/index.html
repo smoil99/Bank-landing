@@ -79,26 +79,29 @@
   /* ---------- Generated editorial photography ---------- */
   .paint { position: absolute; inset: 0; overflow: hidden; background: #1c1510; } /* тёплый тёмный, в тон фото, пока оно грузится */
   .paint img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .hero .paint::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(22,21,18,.24), rgba(22,21,18,.5) 55%, rgba(22,21,18,.52)); }
+  /* первый экран: белый фон и шёлковые ленты флагов Индии и России (рисует скрипт); без WebGL — та же лента статично */
+  .hero .paint { background: #fff; }
+  .hero .paint:not(:has(canvas)) { background: linear-gradient(118deg, transparent 68%, #128708 71%, #fff 74%, #fff 77%, #ff9933 80%, transparent 84%), linear-gradient(118deg, transparent 16%, #d52b1e 20%, #0039a6 24%, #fff 28%, transparent 31%), #fff; }
+  .hero .paint canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .promo .paint::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(40,24,10,.12), rgba(40,24,10,.78)); }
   .feature .paint::after { content: ""; position: absolute; inset: 0; background: rgba(25,36,28,.08); }
-  @media (max-width: 760px) { .hero .paint img { object-position: 48% center; } }
 
   /* ---------- Hero ---------- */
-  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; color: #fff; text-align: center; overflow: hidden; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; color: var(--ink); text-align: center; overflow: hidden; }
   .hero-inner { position: relative; z-index: 2; padding: 120px var(--gutter) 140px; }
   /* параллакс (значения ставит скрипт): фото отстаёт от прокрутки, текст уходит вверх быстрее и гаснет */
   .hero .paint, .hero-inner, .hero .signup { will-change: transform; }
   .hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 7.4vw, 92px); line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
   .hero h1 em { font-weight: 300; }
-  .hero .lede { margin-top: 28px; font-size: 16px; opacity: .92; }
-  .signup { position: absolute; z-index: 2; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.18); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset; width: min(360px, calc(100% - 32px)); }
+  .hero .lede { margin-top: 28px; font-size: 16px; color: var(--ink-2); }
+  @media (min-width: 761px) { .hero .lede { max-width: 30em; margin-inline: auto; text-wrap: balance; } } /* на десктопе — ровно в 2 строки */
+  .signup { position: absolute; z-index: 2; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgba(20,16,12,.1) inset, 0 6px 24px rgba(20,16,12,.06); width: min(360px, calc(100% - 32px)); }
   /* открытие первого экрана (html.intro → html.intro.ready): фото проявляется из размытия и приближения,
      слова заголовка выезжают из-под маски по очереди (--i), затем подзаголовок, тикер, форма и меню */
   .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .14em .3em; margin: 0 -.14em -.3em; } /* запас под хвосты курсивных «р», «у» и наклон букв */
   .hero h1 .w > span { display: inline-block; }
-  .intro .hero .paint img { transition: transform 2.6s cubic-bezier(.2,.7,.1,1), filter 1.8s ease; }
-  .intro:not(.ready) .hero .paint img { transform: scale(1.15); filter: blur(14px) brightness(.55); }
+  .intro .hero .paint canvas { transition: opacity 1.6s ease, transform 2.6s cubic-bezier(.2,.7,.1,1); }
+  .intro:not(.ready) .hero .paint canvas { opacity: 0; transform: scale(1.08); }
   /* без размытия: размытые буквы выходили за маску и обрезались по её краям */
   .intro .hero h1 .w > span { transition: transform 1.1s cubic-bezier(.2,.8,.2,1) calc(.35s + var(--i) * 90ms); }
   .intro:not(.ready) .hero h1 .w > span { transform: translateY(150%); }
@@ -108,9 +111,9 @@
   .intro .nav .pillgroup { --d: 1.6s; }
   .intro:not(.ready) :is(.hero .lede, .signup) { opacity: 0; translate: 0 18px; }
   .intro:not(.ready) .nav .pillgroup { opacity: 0; translate: 0 -16px; }
-  .signup input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; padding: 0 12px; color: #fff; font-size: 14px; }
-  .signup input::placeholder { color: rgba(255,255,255,.75); }
-  .signup button { height: 38px; padding: 0 14px; border: 0; border-radius: 10px; background: #fff; color: var(--ink); font-size: 14px; cursor: pointer; white-space: nowrap; }
+  .signup input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; padding: 0 12px; color: var(--ink); font-size: 14px; }
+  .signup input::placeholder { color: var(--ink-2); }
+  .signup button { height: 38px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--ink); color: #fff; font-size: 14px; cursor: pointer; white-space: nowrap; }
 
   /* ---------- Sections ---------- */
   section { position: relative; }
@@ -295,12 +298,16 @@
   .ev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(28px, 4vw, 48px); }
   .ev-card { position: relative; aspect-ratio: .9; border-radius: 28px; overflow: hidden; color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(20px, 2.4vw, 28px); isolation: isolate; transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s; }
   .ev-card .bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
-  /* фото размыто, при наведении (и фокусе с клавиатуры) становится чётким; scale прячет размытые края */
-  .ev-card .bg img { width: 100%; height: 100%; object-fit: cover; filter: blur(12px); transform: scale(1.12); transition: filter .6s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
+  /* фото чёткое; при наведении (и фокусе с клавиатуры) размывается и темнеет, проявляется описание; scale прячет размытые края */
+  .ev-card .bg img { width: 100%; height: 100%; object-fit: cover; filter: blur(0); transform: scale(1.04); transition: filter .6s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
+  .ev-card .bg::after { content: ""; position: absolute; inset: 0; background: rgba(20,14,8,.4); opacity: 0; transition: opacity .6s ease; }
+  .ev-card .desc { margin-top: 14px; max-width: 34ch; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.86); opacity: 0; translate: 0 10px; transition: opacity .45s ease, translate .6s cubic-bezier(.2,.8,.2,1); }
+  .ev-card:is(:hover, :focus-visible) .desc { opacity: 1; translate: 0 0; }
+  .ev-card:is(:hover, :focus-visible) .bg::after { opacity: 1; }
   /* затемнение сверху и снизу — под заголовок и даты, середина фото остаётся чистой */
   .ev-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(20,14,8,.7) 0%, rgba(20,14,8,.12) 36%, rgba(20,14,8,.12) 50%, rgba(20,14,8,.88) 100%); }
   .ev-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px rgba(40,26,14,.22); }
-  .ev-card:hover .bg img, .ev-card:focus-visible .bg img { filter: blur(0); transform: scale(1.04); }
+  .ev-card:hover .bg img, .ev-card:focus-visible .bg img { filter: blur(12px); transform: scale(1.12); }
   .ev-card .q { font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.3vw, 32px); line-height: 1.15; letter-spacing: -.01em; }
   .ev-card .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
   .ev-card .go { flex: none; display: grid; place-items: center; width: 40px; height: 40px; color: #fff; }
@@ -386,7 +393,7 @@
   .foot-col a { color: rgba(255,255,255,.92); width: fit-content; }
   .foot-col a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   /* иллюстрация внизу подвала: по центру, нижним краем к низу страницы */
-  .foot-ill { display: block; width: min(760px, 88%); height: auto; margin: 0 auto; }
+  .foot-ill { display: block; width: min(507px, 58.7%); height: auto; margin: 0 auto; }
   @media (max-width: 760px) { .foot { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; } }
 
   /* ---------- Reveal ---------- */
@@ -435,7 +442,7 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
-  <div class="paint" aria-hidden="true"><img src="img/hero.webp" srcset="img/hero-mobile.webp 768w, img/hero.webp 1536w" sizes="(max-width: 760px) 100vw, 1200px" width="1536" height="1024" fetchpriority="high" decoding="async" alt=""></div>
+  <div class="paint" aria-hidden="true"><canvas id="ribbon"></canvas></div>
   <div class="hero-inner">
     <h1 aria-label="Россия и Индия. Общее дело."><span class="w"><span style="--i:0">Россия</span></span> <span class="w"><span style="--i:1">и</span></span> <span class="w"><span style="--i:2">Индия.</span></span><br><em id="heroRot" aria-hidden="true"><span class="w"><span style="--i:3">Общее</span></span> <span class="w"><span style="--i:4">дело.</span></span></em></h1>
     <p class="lede">Российско-Индийский деловой совет — площадка бизнес-интересов клиентов обеих стран</p>
@@ -614,17 +621,17 @@
     <div class="ev-grid rv">
       <a class="ev-card" data-ev="0" href="https://www.vibrantgujarat.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/event-gujarat.webp" alt="" loading="lazy" decoding="async"></span>
-        <div class="q">Vibrant Gujarat Global Summit</div>
+        <div class="top"><div class="q">Vibrant Gujarat Global Summit</div><p class="desc">Инвестиционный саммит штата Гуджарат: встречи с властями штата, презентации проектов и подписание соглашений.</p></div>
         <div class="foot-row"><div class="who">10—12 января 2027<span>Индия, Гуджарат</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width=".7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
       <a class="ev-card" data-ev="1" href="https://www.indiaenergyweek.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/event-energy.webp" alt="" loading="lazy" decoding="async"></span>
-        <div class="q">India Energy Week</div>
+        <div class="top"><div class="q">India Energy Week</div><p class="desc">Главная энергетическая выставка и конференция Индии: нефть и газ, водород, ВИЭ и энергопереход.</p></div>
         <div class="foot-row"><div class="who">28—31 января 2027<span>Индия, Калькутта</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width=".7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
       <a class="ev-card" data-ev="2" href="https://www.bharat-mobility.com/" target="_blank" rel="noopener">
         <span class="bg" aria-hidden="true"><img src="img/event-mobility.webp" alt="" loading="lazy" decoding="async"></span>
-        <div class="q">Bharat Mobility</div>
+        <div class="top"><div class="q">Bharat Mobility</div><p class="desc">Глобальная выставка мобильности: автопром, электротранспорт, комплектующие и логистика.</p></div>
         <div class="foot-row"><div class="who">4—9 февраля 2027<span>Индия, Дели</span></div><span class="go" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 14 14"><path d="M4.5 9.5 9.5 4.5M5.5 4.5h4v4" fill="none" stroke="currentColor" stroke-width=".7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </a>
     </div>
@@ -721,9 +728,8 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // открытие первого экрана: стартуем, когда загрузилось фото (или через 1.5 с, если сеть медленная)
-  const heroImg = document.querySelector('.hero .paint img');
   const playIntro = () => requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add('ready')));
-  if (heroImg.complete) playIntro(); else heroImg.addEventListener('load', playIntro, { once: true });
+  playIntro();
   setTimeout(playIntro, 1500);
 
   // reveal on scroll
@@ -790,7 +796,83 @@
   [...new Set(spyLinks.map(a => a.getAttribute('href')))].forEach(h => { const el = document.querySelector(h); if (el) spy.observe(el); });
   new IntersectionObserver(([e]) => { if (e.isIntersecting) spyLinks.forEach(a => a.classList.remove('is-current')); }, { rootMargin: '-45% 0px -50% 0px' }).observe(document.getElementById('top'));
 
-  // параллакс первого экрана: только пока он виден; фото — 40% скорости прокрутки, текст — +25% и гаснет
+  // фон первого экрана: две шёлковые ленты по диагонали (как у stripe.com) — флаг Индии справа сверху,
+  // флаг России в противоположном углу; тонкие волокна вдоль лент, медленно струятся.
+  // Нет WebGL или «уменьшение движения» — статичный CSS-градиент той же ленты.
+  (() => {
+    const cv = document.getElementById('ribbon');
+    const gl = !reduce && cv.getContext('webgl', { alpha: false, antialias: false, depth: false });
+    if (!gl) { cv.remove(); return; }
+    const VS = `attribute vec2 aPos; varying vec2 vUv; void main(){ vUv = aPos * .5 + .5; gl_Position = vec4(aPos, 0., 1.); }`;
+    const FS = `precision highp float; varying vec2 vUv; uniform vec2 uRes; uniform float uT;
+      float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+        return mix(mix(h(i), h(i + vec2(1., 0.)), f.x), mix(h(i + vec2(0., 1.)), h(i + 1.), f.x), f.y); }
+      // цвета флага не полосами, а перетекающими пятнами: два медленных шумовых поля смешивают три цвета
+      vec3 flag(vec3 cA, vec3 cB, vec3 cW, float b, float al, float t, float ph){
+        float n1 = n(vec2(al * 1.4 + t * .09 + ph, b * 1.3 - t * .04));
+        float n2 = n(vec2(al * 2.1 - t * .07 + ph * 2. + 7., b * 1.8 + t * .05 + 3.));
+        vec3 c = mix(cA, cB, smoothstep(.32, .68, n1 + .25 * (b - .5)));
+        return mix(c, cW, .55 * smoothstep(.58, .82, n2)); }
+      // одна лента: x — её поперечная координата 0..1, al — вдоль; .w — маска
+      vec2 band(vec2 P, float asp, float t, float ph, out float al){
+        float x0 = asp > 1. ? .60 * asp : .66 * asp, x1 = asp > 1. ? 1.06 * asp : 1.3 * asp;
+        vec2 C0 = vec2(x0, 1.1), d = normalize(vec2(x1, -.1) - C0), nn = vec2(-d.y, d.x);
+        al = dot(P - C0, d); float ac = dot(P - C0, nn);
+        ac += .03 * (al - .7) * (al - .7) - .02;
+        ac += .040 * sin(al * 2.2 + t * .35 + ph) + .022 * sin(al * 4.7 - t * .27 + 1.3 + ph);
+        float w = asp > 1. ? .3 : .21;
+        return vec2(ac / w, ac); }
+      vec3 silk(vec3 col, float b, float al, float ac, float t){
+        float warp = n(vec2(al * 2.4 + t * .05, ac * 9.));
+        float fold = .5 + .5 * sin(ac * 26. - al * 1.1 + t * .3 + warp * 2.);
+        col *= .88 + .14 * fold;
+        float fib = sin(ac * uRes.y * 1.05 + warp * 22. + n(vec2(al * 30., ac * 40.)) * 3.);
+        return min(col * (1. + .06 * fib), 1.); }
+      void main(){
+        float asp = uRes.x / uRes.y, t = uT;
+        vec2 P = vec2(vUv.x * asp, vUv.y);
+        vec3 o = vec3(1.);
+        // Индия — от верхнего края в правый нижний угол; Россия — зеркально, в левом нижнем углу
+        for (int k = 0; k < 2; k++) {
+          vec2 Q = k == 0 ? P : vec2(asp, 1.) - P;
+          float al; vec2 bb = band(Q, asp, t, float(k) * 2.1, al);
+          float b = bb.x, drift = .04 * sin(al * 1.6 + t * .22);
+          float ph = float(k) * 11.3, bd = clamp(b + drift, 0., 1.);
+          vec3 col = k == 0
+            ? flag(vec3(.07, .53, .03), vec3(1., .60, .20), vec3(1.), bd, al, t, ph)   // Индия: зелёный, шафран, белый
+            : flag(vec3(.84, .17, .12), vec3(0., .22, .65), vec3(1.), bd, al, t, ph);  // Россия: красный, синий, белый
+          col = silk(col, b, al, bb.y, t);
+          float m = smoothstep(-.12, .06, b); // как у Stripe: мягкий только внутренний край, к углу лента заливает всё
+          o = mix(o, col, m);
+        }
+        o += (h(vUv * uRes + fract(t)) - .5) * .02;
+        gl_FragColor = vec4(o, 1.); }`;
+    const sh = (tp, src) => { const x = gl.createShader(tp); gl.shaderSource(x, src); gl.compileShader(x); return x; };
+    const pr = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS));
+    gl.bindAttribLocation(pr, 0, 'aPos'); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { cv.remove(); return; }
+    gl.useProgram(pr);
+    const uRes = gl.getUniformLocation(pr, 'uRes'), uT = gl.getUniformLocation(pr, 'uT');
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    const resize = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 1.5), r = cv.getBoundingClientRect();
+      cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr));
+      gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uRes, cv.width, cv.height);
+    };
+    resize(); addEventListener('resize', resize);
+    let running = false, raf = 0; const t0 = performance.now();
+    const frame = now => { raf = 0; if (!running) return; gl.uniform1f(uT, (now - t0) / 1000 % 3600); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); raf = requestAnimationFrame(frame); };
+    const setRunning = on => { running = on && !document.hidden; if (running && !raf) raf = requestAnimationFrame(frame); };
+    let heroVisible = true;
+    new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; setRunning(heroVisible); }).observe(cv);
+    document.addEventListener('visibilitychange', () => setRunning(heroVisible));
+    setRunning(true);
+  })();
+
   const hero = document.getElementById('top');
   const heroPaint = hero.querySelector('.paint'), heroInner = hero.querySelector('.hero-inner'), heroForm = hero.querySelector('.signup');
   let heroRaf = 0;
