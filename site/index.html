@@ -859,8 +859,12 @@
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     const resize = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 1.5), r = cv.getBoundingClientRect();
-      cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr));
+      // размеры без transform (параллакс/открытие) и только при реальном изменении — иначе на телефоне
+      // панель браузера при прокрутке шлёт resize, холст пересоздаётся и волокна «прыгают»
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      const w = Math.max(1, Math.round(cv.offsetWidth * dpr)), h = Math.max(1, Math.round(cv.offsetHeight * dpr));
+      if (w === cv.width && h === cv.height) return;
+      cv.width = w; cv.height = h;
       gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uRes, cv.width, cv.height);
     };
     resize(); addEventListener('resize', resize);
@@ -874,12 +878,13 @@
   })();
 
   const hero = document.getElementById('top');
+  const coarse = matchMedia('(pointer: coarse)').matches;
   const heroPaint = hero.querySelector('.paint'), heroInner = hero.querySelector('.hero-inner'), heroForm = hero.querySelector('.signup');
   let heroRaf = 0;
   const heroParallax = () => {
     heroRaf = 0;
     const y = Math.min(scrollY, hero.offsetHeight), k = y / hero.offsetHeight;
-    heroPaint.style.transform = `translate3d(0, ${(y * .4).toFixed(1)}px, 0)`;
+    if (!coarse) heroPaint.style.transform = `translate3d(0, ${(y * .4).toFixed(1)}px, 0)`; // на телефоне фон не двигаем: scroll-события отстают и ленты дёргаются
     heroInner.style.transform = `translate3d(0, ${(-y * .25).toFixed(1)}px, 0)`;
     // на самом верху не трогаем прозрачность, чтобы не мешать анимации открытия
     heroInner.style.opacity = y ? Math.max(0, 1 - k * 1.6).toFixed(3) : '';
