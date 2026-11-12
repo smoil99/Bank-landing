@@ -886,7 +886,7 @@
     heroRaf = 0;
     const y = Math.min(scrollY, hero.offsetHeight), k = y / hero.offsetHeight;
     if (!coarse) heroPaint.style.transform = `translate3d(0, ${(y * .4).toFixed(1)}px, 0)`; // на телефоне фон не двигаем: scroll-события отстают и ленты дёргаются
-    heroInner.style.transform = `translate3d(0, ${(-y * .25).toFixed(1)}px, 0)`;
+    if (!coarse) heroInner.style.transform = `translate3d(0, ${(-y * .25).toFixed(1)}px, 0)`; // на телефоне текст не сдвигаем — только гасим
     // на самом верху не трогаем прозрачность, чтобы не мешать анимации открытия
     heroInner.style.opacity = y ? Math.max(0, 1 - k * 1.6).toFixed(3) : '';
     heroForm.style.opacity = y ? Math.max(0, 1 - k * 2.4).toFixed(3) : '';
