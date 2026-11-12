@@ -94,6 +94,7 @@
   .hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 7.4vw, 92px); line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
   .hero h1 em { font-weight: 300; }
   .hero .lede { margin-top: 28px; font-size: 16px; color: var(--ink-2); }
+  @media (max-width: 760px) { .hero .lede { font-size: clamp(13.5px, 5vw, 16px); text-wrap: balance; } } /* на телефоне — 3 строки даже на узких экранах */
   @media (min-width: 761px) { .hero .lede { max-width: 30em; margin-inline: auto; text-wrap: balance; } } /* на десктопе — ровно в 2 строки */
   .signup { position: absolute; z-index: 2; left: 50%; bottom: 40px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgba(20,16,12,.1) inset, 0 6px 24px rgba(20,16,12,.06); width: min(360px, calc(100% - 32px)); }
   /* открытие первого экрана (html.intro → html.intro.ready): фото проявляется из размытия и приближения,
